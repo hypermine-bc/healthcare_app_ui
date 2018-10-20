@@ -1,5 +1,5 @@
-π<p align="center">
-  <img width="320" style="max-width:100% !important; background-color: teal !important;border-radius: 6%; !important" src="http://hypermine.in/assets/img/hyper-logo-white.png">
+π<p align="center" style="max-width:100% !important; background-color: teal !important;border-radius: 6%; !important">
+  <img width="320"  src="http://hypermine.in/assets/img/hyper-logo-white.png">
 </p>
 
 <p align="center">
