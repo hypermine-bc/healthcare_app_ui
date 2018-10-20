@@ -32,25 +32,30 @@
       </el-table-column>
       <el-table-column :label="$t('table.date')" width="150px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.date | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.description')" min-width="150px">
+
+      <el-table-column label="Description" min-width="100px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
+          <span >{{ scope.row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+
+      <el-table-column label="Reviewer" width="110px" align="center">
         <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
+          <el-tag
+            :type="scope.row.tag === 'Me' ? 'primary' : 'success'"
+            disable-transitions>{{ scope.row.reviewer }}</el-tag>
         </template>
       </el-table-column>
+
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
         </template>
       </el-table-column>
+
     </el-table>
 
     <div class="pagination-container">
@@ -78,8 +83,8 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>
         </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input"/>
+        <el-form-item label="Description">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.description" type="textarea" placeholder="Please input"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -141,34 +146,34 @@ export default {
     return {
       tableKey: 0,
       list: [{
-          id:'9993',
-          description:'ispum lorem something here',
-          date: '2016-05-03',
-          reviewer:'me',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          id:'9993',
-          description:'ispum lorem something here',
-          date: '2016-05-02',
-          reviewer:'me',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          id:'9993',
-          description:'ispum lorem something here',
-          date: '2016-05-04',
-          reviewer:'me',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          id:'9993',
-          description:'ispum lorem something here',
-          date: '2016-05-01',
-          reviewer:'me',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }],
+        id: '9993',
+        description: 'ispum lorem something here',
+        date: '2016-05-03',
+        reviewer: 'me',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        id: '9993',
+        description: 'ispum lorem something here',
+        date: '2016-05-02',
+        reviewer: 'me',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        id: '9993',
+        description: 'ispum lorem something here',
+        date: '2016-05-04',
+        reviewer: 'me',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        id: '9993',
+        description: 'ispum lorem something here',
+        date: '2016-05-01',
+        reviewer: 'me',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles'
+      }],
       total: null,
       listLoading: false,
       listQuery: {
@@ -283,7 +288,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.temp.timestamp = new Date(this.temp.date)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

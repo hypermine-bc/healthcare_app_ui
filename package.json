@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
+  "name": "Healthcare-App",
   "version": "3.9.1",
-  "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "description": "Admin Pannel to manager customer supply chain",
+  "author": "Pan <info@hypermine.in>",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
