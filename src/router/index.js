@@ -116,33 +116,33 @@ export const asyncRouterMap = [
   // tableRouter,
 
   {
-    path: '/example',
+    path: '/register',
     component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
+    redirect: '/register/list',
+    name: 'Register',
     meta: {
-      title: 'example',
-      icon: 'example'
+      title: 'Register',
+      icon: 'peoples'
     },
     children: [
       {
         path: 'create',
         component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'createArticle', icon: 'edit' }
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'editArticle', noCache: true },
+        name: 'EditUser',
+        meta: { title: 'Edit User', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'articleList', icon: 'list' }
+        name: 'UserList',
+        meta: { title: 'User List', icon: 'list' }
       }
     ]
   },
