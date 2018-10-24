@@ -21,22 +21,21 @@
               <el-input v-model="form.lastName"/>
             </el-form-item>
 
-             <el-form-item label="Email">
-                <el-input v-model="form.email"/>
-              </el-form-item>
+            <el-form-item label="Email">
+              <el-input v-model="form.email"/>
+            </el-form-item>
 
-              <el-form-item label="Password">
-                <el-input v-model="form.password" type="password"/>
-              </el-form-item>
-            
-              
-              <el-form-item label="Addresse">
-                <el-input v-model="form.address.address" type="textarea"/>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSubmit">Create</el-button>
-                <el-button>Cancel</el-button>
-              </el-form-item>
+            <el-form-item label="Password">
+              <el-input v-model="form.password" type="password"/>
+            </el-form-item>
+
+            <el-form-item label="Addresse">
+              <el-input v-model="form.address.address" type="textarea"/>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">Create</el-button>
+              <el-button>Cancel</el-button>
+            </el-form-item>
           </div>
         </el-col>
       </el-row>
@@ -71,41 +70,41 @@ import axios from 'axios'
 // }
 
 export default {
-  mounted(){
-    console.log(participantDataList)
-  },
   data() {
     return {
-      form : {},
-      isParticipantSelected : ''
+      // form: participantDataList[0],
+      isParticipantSelected: ''
     }
+  },
+  computed: {
+    form() {
+      if (this.isParticipantSelected) {
+        return participantDataList[this.isParticipantSelected]
+      } else {
+        return participantDataList[0]
+      }
+    },
+    participant() {
+      if (this.isParticipantSelected) {
+        const list = participantDataList[this.isParticipantSelected].$class.split('.')
+        return list[list.length - 1]
+      }
+    }
+  },
+  mounted() {
+    console.log(participantDataList)
   },
   methods: {
     onSubmit() {
-      axios.post('http://localhost:3000/api/'+this.participant,this.form)
-      .then(e=>{
-        console.log(e)
-      })
-      .catch(e=>{
-        console.error(e)
-      })
-    },
-  },
-  computed : {
-    setForm () {
-      if(this.isParticipantSelected){
-        this.form = participantDataList[this.isParticipantSelected]
-        return this.form
-      }
-    },
-    participant () {
-      if(this.isParticipantSelected) {
-        let list = participantDataList[this.isParticipantSelected].$class.split('.')
-        return list[list.length-1]
-      }
-
+      axios.post('http://localhost:3000/api/' + this.participant, this.form)
+        .then(e => {
+          console.log(e)
+        })
+        .catch(e => {
+          console.error(e)
+        })
     }
-  }  
+  }
 }
 </script>
 
