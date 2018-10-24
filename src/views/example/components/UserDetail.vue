@@ -3,48 +3,41 @@
     <el-form ref="form" :model="form" label-width="120px" >
       <el-row class="createPost-main-container">
         <el-col :span="12">
-          <el-form-item label="Activity name">
-            <el-input v-model="form.name"/>
-          </el-form-item>
-          <el-form-item label="Activity zone">
-            <el-select v-model="form.region" placeholder="please select your zone">
-              <el-option label="Zone one" value="shanghai"/>
-              <el-option label="Zone two" value="beijing"/>
+          <el-form-item label="Participant">
+            <el-select v-model="isParticipantSelected" placeholder="please select Participant">
+              <el-option label="IQVIA" value="0"/>
+              <el-option label="Doctor" value="1"/>
+              <el-option label="Charity" value="2"/>
+              <el-option label="Patient" value="3"/>
+              <el-option label="Pharma" value="4"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="Activity time">
-            <el-col :span="11">
-              <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;"/>
-            </el-col>
-            <el-col :span="2" class="line">-</el-col>
-            <el-col :span="11">
-              <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;"/>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="Instant delivery">
-            <el-switch v-model="form.delivery"/>
-          </el-form-item>
-          <el-form-item label="Activity type">
-            <el-checkbox-group v-model="form.type">
-              <el-checkbox label="Online activities" name="type"/>
-              <el-checkbox label="Promotion activities" name="type"/>
-              <el-checkbox label="Offline activities" name="type"/>
-              <el-checkbox label="Simple brand exposure" name="type"/>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="Resources">
-            <el-radio-group v-model="form.resource">
-              <el-radio label="Sponsor"/>
-              <el-radio label="Venue"/>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="Activity form">
-            <el-input v-model="form.desc" type="textarea"/>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
-          </el-form-item>
+          <div v-if="isParticipantSelected" >
+            <el-form-item label="First Name">
+              <el-input v-model="form.firstName"/>
+            </el-form-item>
+
+            <el-form-item label="Last Name">
+              <el-input v-model="form.lastName"/>
+            </el-form-item>
+
+             <el-form-item label="Email">
+                <el-input v-model="form.email"/>
+              </el-form-item>
+
+              <el-form-item label="Password">
+                <el-input v-model="form.password" type="password"/>
+              </el-form-item>
+            
+              
+              <el-form-item label="Addresse">
+                <el-input v-model="form.address.address" type="textarea"/>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmit">Create</el-button>
+                <el-button>Cancel</el-button>
+              </el-form-item>
+          </div>
         </el-col>
       </el-row>
     </el-form>
@@ -61,7 +54,8 @@
 // import { userSearch } from '@/api/remoteSearch'
 // import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
-
+import participantDataList from '../core/form-data.js'
+import axios from 'axios'
 // const defaultForm = {
 //   status: 'draft',
 //   title: '', // 文章题目
@@ -77,40 +71,41 @@
 // }
 
 export default {
+  mounted(){
+    console.log(participantDataList)
+  },
   data() {
     return {
-      userData: {
-        '$class': 'org.example.iqvia.IQVIA',
-        'email': '2044',
-        'firstName': '',
-        'lastName': '',
-        'password': '',
-        'address': {
-          '$class': 'org.example.iqvia.Address',
-          'country': '',
-          'city': '',
-          'address': '',
-          'mobile': '',
-          'zip': ''
-        }
-      },
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      }
+      form : {},
+      isParticipantSelected : ''
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
+      axios.post('http://localhost:3000/api/'+this.participant,this.form)
+      .then(e=>{
+        console.log(e)
+      })
+      .catch(e=>{
+        console.error(e)
+      })
+    },
+  },
+  computed : {
+    setForm () {
+      if(this.isParticipantSelected){
+        this.form = participantDataList[this.isParticipantSelected]
+        return this.form
+      }
+    },
+    participant () {
+      if(this.isParticipantSelected) {
+        let list = participantDataList[this.isParticipantSelected].$class.split('.')
+        return list[list.length-1]
+      }
+
     }
-  }
+  }  
 }
 </script>
 
