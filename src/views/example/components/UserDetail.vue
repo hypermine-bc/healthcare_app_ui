@@ -53,7 +53,7 @@
 // import { userSearch } from '@/api/remoteSearch'
 // import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
-import participantDataList from '../core/form-data.js'
+import { participantData as participantDataList } from '../core/form-data.js'
 import axios from 'axios'
 // const defaultForm = {
 //   status: 'draft',
@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    console.log(participantDataList)
+    // console.log(participantDataList)
   },
   methods: {
     onSubmit() {
@@ -101,7 +101,7 @@ export default {
           console.log(e)
           this.$notify({
             title: 'Success',
-            message: 'Successfully Participant created' ,
+            message: 'Successfully Participant created',
             type: 'success'
           })
         })
@@ -110,7 +110,7 @@ export default {
           this.$notify.error({
             title: 'Error',
             dangerouslyUseHTMLString: true,
-            message: '<strong>'+JSON.stringify(e.message)+'</strong>' 
+            message: '<strong>' + JSON.stringify(e.message) + '</strong>'
           })
         })
     }

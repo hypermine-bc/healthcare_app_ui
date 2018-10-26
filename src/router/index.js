@@ -146,6 +146,30 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/pharma',
+    component: Layout,
+    redirect: '/pharma/medicine',
+    name: 'Pharma',
+    meta: {
+      title: 'Pharma',
+      icon: 'documentation'
+    },
+    children: [
+      {
+        path: '/drug/add',
+        component: () => import('@/views/pharma/medicine/create'),
+        name: 'AddDrugs',
+        meta: { title: 'Add Drugs', icon: 'edit' }
+      },
+      {
+        path: '/drug/list',
+        component: () => import('@/views/pharma/medicine/list'),
+        name: 'DrugList',
+        meta: { title: 'Drug List', icon: 'list' }
+      }
+    ]
+  },
   // {
   //   path: '/error',
   //   component: Layout,

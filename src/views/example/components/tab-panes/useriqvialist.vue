@@ -8,12 +8,12 @@
       </el-table-column>
       <el-table-column align="center" label="Name" >
         <template slot-scope="scope">
-          <span>{{ scope.row.firstName}} {{scope.row.lastName}}</span>
+          <span>{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Addresse" >
         <template slot-scope="scope">
-          <span>{{ scope.row.address.address}}</span>
+          <span>{{ scope.row.address.address }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
@@ -35,11 +35,11 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"/>
     </div>
-    <el-dialog title="Update User Details" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm"  :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <el-dialog :visible.sync="dialogFormVisible" title="Update User Details">
+      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-row class="createPost-main-container">
           <el-col :span="24">
-   
+
             <div v-if="dialogFormVisible" >
               <el-form-item label="First Name">
                 <el-input v-model="formData.firstName"/>
@@ -72,9 +72,9 @@
   </div>
 </template>
 <script>
-import { fetchIqvia ,updateUser } from '@/api/userlist'
+import { fetchIqvia, updateUser } from '@/api/userlist'
 export default {
-  components: {  },
+  components: { },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -93,7 +93,7 @@ export default {
   },
   data() {
     return {
-    formData: {},
+      formData: {},
       isParticipantSelected: true,
       dialogFormVisible: false,
       list: null,
@@ -104,7 +104,7 @@ export default {
         sort: '+id'
       },
       loading: false,
-      total:0
+      total: 0
     }
   },
   created() {
@@ -137,17 +137,17 @@ export default {
       this.getList()
     },
     updateData() {
-          const tempData = Object.assign({}, this.formData)
-          updateUser(tempData,'IQVIA').then(() => {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Status',
-              message: 'Updated Sucessfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-    },
+      const tempData = Object.assign({}, this.formData)
+      updateUser(tempData, 'IQVIA').then(() => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: 'Status',
+          message: 'Updated Sucessfully',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    }
   }
 }
 </script>
