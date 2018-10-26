@@ -24,6 +24,8 @@ import pharmaList from './components/tab-panes/userpharmalist'
 import iqviaList from './components/tab-panes/useriqvialist'
 import charityList from './components/tab-panes/usercharitylist'
 
+//ddd
+
 export default {
   components: { patientList, doctorList,pharmaList,iqviaList,charityList},
   name: 'ArticleList',
