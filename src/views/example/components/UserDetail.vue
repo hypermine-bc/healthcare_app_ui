@@ -99,9 +99,19 @@ export default {
       axios.post('http://localhost:3000/api/' + this.participant, this.form)
         .then(e => {
           console.log(e)
+          this.$notify({
+            title: 'Success',
+            message: 'Successfully Participant created' ,
+            type: 'success'
+          })
         })
         .catch(e => {
-          console.error(e)
+          console.log(e)
+          this.$notify.error({
+            title: 'Error',
+            dangerouslyUseHTMLString: true,
+            message: '<strong>'+JSON.stringify(e.message)+'</strong>' 
+          })
         })
     }
   }

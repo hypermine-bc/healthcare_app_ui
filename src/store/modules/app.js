@@ -8,6 +8,7 @@ const app = {
     },
     logo: 'iqvia-color',
     device: 'desktop',
+    bcBaseUrl: 'http://localhost:3000',
     language: Cookies.get('language') || 'en',
     size: Cookies.get('size') || 'medium'
   },
