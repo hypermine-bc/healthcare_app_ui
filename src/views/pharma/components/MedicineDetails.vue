@@ -22,6 +22,9 @@
           <el-form-item label="Drug Code">
             <el-input v-model="form.MedId" placeholder="Example iqv_drg_001"/>
           </el-form-item>
+          <el-form-item label="Pharma Name">
+            <el-input v-model="form.pharma" placeholder="Example resource:org.example.iqvia.Pharma#glx@email.com"/>
+          </el-form-item>
           <el-form-item label="Drug Price">
             <el-input v-model="form.MedPrice" placeholder="per box in DHR"/>
           </el-form-item>
@@ -30,7 +33,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
+            <el-button @click="clearForm">Cancel</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -42,6 +45,7 @@
 
 import { medicineData } from '../../example/core/form-data.js'
 import medList from '../core/medicinelist.js'
+import { createAsset } from '@/api/pharma.js'
 
 // import axios from 'axios'gg
 export default {
@@ -65,7 +69,28 @@ export default {
     console.log(medList)
   },
   methods: {
+    clearForm(){
+      Object.keys(this.form).forEach(key=>{
+        this.form[key]=''
+      })
+    },
     onSubmit() {
+      createAsset(this.form,'Medicine')
+      .then(e=>{
+          this.$notify({
+            title: 'Status',
+            message: 'Created Sucessfully',
+            type: 'success',
+            duration: 2000
+          })
+      })
+      .catch(err=>{
+        this.$notify.error({
+            title: 'Error',
+            dangerouslyUseHTMLString: true,
+            message: '<strong>' + JSON.stringify(err.message) + '</strong>'
+          })
+      })
     },
     remoteMethod(query) {
       if (query !== '') {

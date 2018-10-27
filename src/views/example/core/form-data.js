@@ -47,7 +47,7 @@ const participantData = [{
 {
   $class: 'org.example.iqvia.Patient',
   email: '',
-  transferBalance: 0,
+  accountBalance: 0,
   firstName: '',
   lastName: '',
   password: '',

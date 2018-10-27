@@ -114,6 +114,37 @@ export const asyncRouterMap = [
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
+    {
+    path: '/doctor',
+    component: Layout,
+    redirect: '/doctor/list',
+    name: 'Doctor',
+    meta: {
+      title: 'Doctor',
+      icon: 'doctor-bold'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/doctor/create'),
+        name: 'CreateCase',
+        meta: { title: 'Create Case', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/doctor/edit'),
+        name: 'EditUser',
+        meta: { title: 'Edit User', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/doctor/userlist'),
+        name: 'CaseList',
+        meta: { title: 'Case List', icon: 'list' }
+      }
+    ]
+  },
 
   {
     path: '/register',
