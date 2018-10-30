@@ -55,6 +55,8 @@
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 import { participantData as participantDataList } from '../core/form-data.js'
 import axios from 'axios'
+import store from '@/store'
+const base_url = store.state.app.bcBaseUrl
 // const defaultForm = {
 //   status: 'draft',
 //   title: '', // 文章题目
@@ -96,7 +98,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      axios.post('http://localhost:3000/api/' + this.participant, this.form)
+      axios.post(base_url + '/api/' + this.participant, this.form)
         .then(e => {
           console.log(e)
           this.$notify({
