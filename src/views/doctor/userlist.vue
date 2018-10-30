@@ -3,7 +3,11 @@
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key">
         <keep-alive>
-          <medicineList v-if="item.key=='ML'"/>
+          <iqviaList v-if="item.key=='IQ'"/>
+          <patientList v-if="item.key=='PT'"/>
+          <doctorList v-if="item.key=='DC'"/>
+          <pharmaList v-if="item.key=='PH'"/>
+          <charityList v-if="item.key=='CH'"/>
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -14,13 +18,17 @@
 <script>
 // import { fetchList } from '@/api/article'
 
-import medicineList from '../components/tab-panes/medicinelist'
+import patientList from './components/tab-panes/userpatientlist'
+import doctorList from './components/tab-panes/userdoctorlist'
+import pharmaList from './components/tab-panes/userpharmalist'
+import iqviaList from './components/tab-panes/useriqvialist'
+import charityList from './components/tab-panes/usercharitylist'
 
 //ddd
 
 export default {
-  components: { medicineList},
-  name: 'MedicineList',
+  components: { patientList, doctorList,pharmaList,iqviaList,charityList},
+  name: 'ArticleList',
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -34,9 +42,13 @@ export default {
   data() {
     return {
       tabMapOptions: [
-        { label: 'Medicine List', key: 'ML' },
+        { label: 'Iqvia', key: 'IQ' },
+        { label: 'Doctor', key: 'DC' },
+        { label: 'Patient', key: 'PT' },
+        { label: 'Charity', key: 'CH' },
+        { label: 'Pharma', key: 'PH' }
       ],
-      activeName: 'ML',
+      activeName: 'IQ',
       list: null,
       total: 0,
       listLoading: true,
@@ -52,7 +64,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchAsset(this.listQuery,'Medicine').then(response => {
+      fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
