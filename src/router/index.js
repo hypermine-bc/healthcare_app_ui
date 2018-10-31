@@ -139,7 +139,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'list',
-        component: () => import('@/views/doctor/userlist'),
+        component: () => import('@/views/doctor/list'),
         name: 'CaseList',
         meta: { title: 'Case List', icon: 'list' }
       }
