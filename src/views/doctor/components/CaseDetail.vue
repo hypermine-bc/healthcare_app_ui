@@ -1,6 +1,5 @@
 <template>
   <div class="createPost-container">
-    
       <el-row class="createPost-main-container" style="height: 200px;">
         <el-col :span="4">
           <el-steps direction="vertical" :active="active" finish-status="success" :space="100">
@@ -13,7 +12,6 @@
             <el-step title="Notes">
             </el-step>
           </el-steps>
-          
           <el-button style="margin-top: 12px;" @click="prev">Prev</el-button>
           <el-button style="margin-top: 12px;" @click="next">{{buttonName}}</el-button>
         </el-col>
@@ -117,7 +115,6 @@ export default {
    ...mapGetters([
       'caseData'
     ])
-    
   },
   mounted() {
     // console.log(participantDataList)
@@ -128,11 +125,11 @@ export default {
       this.$store.dispatch('setCaseData',prescriptionData)
   },
   methods: {
-    getPatient(){
-      fetchPatient(this.listQuery).then(e=>{
+    getPatient() {
+      fetchPatient(this.listQuery).then(e => {
         this.patientlist = e.data
       })
-      .catch(e => {
+        .catch(e => {
           console.log(e)
           this.$notify.error({
             title: 'Error',
@@ -141,11 +138,11 @@ export default {
           })
         })
     },
-    getDoctor(){
-      fetchDoctor(this.listQuery).then(e=>{
+    getDoctor() {
+      fetchDoctor(this.listQuery).then(e => {
         this.doctorlist = e.data
       })
-      .catch(e => {
+        .catch(e => {
           console.log(e)
           this.$notify.error({
             title: 'Error',
@@ -155,14 +152,13 @@ export default {
         })
     },
     next() {
-        if (this.active++ > 3) 
-          {
-            this.active = 0;
-            this.buttonName='Next Step'
-          }
-        if(this.active==3)
-        {
-          this.buttonName='Save'
+
+        if (this.active++ > 2) {
+          this.active = 0
+          this.buttonName = 'Next Step'
+        }
+        if (this.active === 3) {
+          this.buttonName = 'Save'
         }
       },
     prev() {
@@ -171,7 +167,8 @@ export default {
         }
          else
           this.active--
-      },
+      }
+    },
     onSubmit() {
     },
     remoteMethodPatient(query) {
@@ -202,8 +199,9 @@ export default {
         this.options4d = []
       }
     }
+
   }
-}
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
