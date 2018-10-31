@@ -1,23 +1,58 @@
 <template>
-  <div>
-    <el-form-item label="Select Medicines">
-      <el-select
-        v-model="patientDetail"
-        :remote-method="remoteMethodPatient"
-        :loading="patientloading"
-        filterable
-        remote
-        multiple
-        reserve-keyword
-        placeholder="Please enter a keyword" >
-        <el-option
-          v-for="item in options4p"
-          :key="item.email"
-          :label="item.firstName"
-          :value="item.email"/>
-      </el-select>
-    </el-form-item>
-  </div>
+      <el-form-item >
+        <el-col :span="24">
+          <el-form-item label="Rx" >
+            <el-select
+              v-model="formData"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              placeholder="Please enter a keyword"
+              size="large"
+              autosize
+              :remote-method="remoteMethodList"
+              :loading="loading" style="width: 100%">
+              <el-option
+                v-for="(item, id) in options4p"
+                :key="item.MedId"
+                :label="item.value"
+                :value-key="id"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-table
+            :data="formData"
+            border            
+             show-summary
+             style="width: 100%">
+            <el-table-column
+              prop="value"
+              label="Name"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="data.MedId"
+              sortable
+              label="Rx Id">
+            </el-table-column>
+            <el-table-column
+              prop="data.MedDescription"
+              label="Rx Description">
+            </el-table-column>
+            <el-table-column
+              prop="label"
+              label="Price"
+              sortable
+              width="180">
+            </el-table-column>
+            
+          </el-table>
+        </el-col>
+      </el-form-item>
 </template>
 <script>
 import { fetchAsset } from '@/api/pharma'
@@ -25,19 +60,25 @@ export default {
   components: { },
   data() {
     return {
-      formData: {},
+      formData: [],
       list: null,
-      loading: false
+      loading: false,
+      options4p: []
     }
   },
   created() {
     this.getList()
   },
+
   methods: {
     getList() {
       fetchAsset(this.listQuery,'Medicine').then(response => {
-        console.log(response)
-        this.list = response.data
+        //this.list = response.data
+        console.log("response.data", response.data)
+
+        this.list = response.data.map(item => {
+          return { value: item.MedName, label: item.MedPrice, data: item};
+        });
         // this.total = response.data.total
         this.loading = false
       })
@@ -49,7 +90,25 @@ export default {
         })
       })
     },
+    remoteMethodList(query) {
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+          this.options4p = this.list.filter(item => {
+            return item.value.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1
+          })
+        }, 200)
+      } else {
+        this.options4p = []
+      }
+    }
+  },
+  computed : {
+    rxlist(){
 
+    }
   }
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div class="createPost-container">
-    <el-form ref="form" :model="form" label-width="120px" >
+    
       <el-row class="createPost-main-container" style="height: 200px;">
-        <el-col :span="6">
+        <el-col :span="4">
           <el-steps direction="vertical" :active="active" finish-status="success" :space="100">
             <el-step title="Patient Info">
             </el-step>
@@ -13,12 +13,15 @@
             <el-step title="Notes">
             </el-step>
           </el-steps>
+          
+          <el-button style="margin-top: 12px;" @click="prev">Prev</el-button>
           <el-button style="margin-top: 12px;" @click="next">{{buttonName}}</el-button>
         </el-col>
-        <el-col :span="18" v-if="active==0">
-            <el-form-item  required>
+        <el-col :span="20" >
+          <el-form ref="form" :model="form" label-width="120px" >
+            <el-form-item   v-if="active==0" >
               <el-col :span="12">
-                <el-form-item label="Select Patient">
+                <el-form-item label="Select Patient" required>
                   <el-select
                     v-model="patientDetail"
                     :remote-method="remoteMethodPatient"
@@ -31,13 +34,17 @@
                       v-for="item in options4p"
                       :key="item.email"
                       :label="item.firstName"
-                      :value="item.email"/>
+                      :value="item"/>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="patientDetail" >{{patientDetail}}</el-form-item>
+                <div v-if="patientDetail !=''">
+                  <el-form-item label="Email" >{{patientDetail.email}}</el-form-item>
+                <el-form-item label="Addresse" >{{patientDetail.address.address}}</el-form-item>
+                </div>
+                
               </el-col>
               <el-col :span="12">
-                <el-form-item label="Select Doctor">
+                <el-form-item label="Select Doctor" required>
                   <el-select
                     v-model="doctorDetail"
                     :remote-method="remoteMethodDoctor"
@@ -50,31 +57,40 @@
                       v-for="item in options4d"
                       :key="item.email"
                       :label="item.firstName"
-                      :value="item.email"/>
+                      :value="item"/>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="doctorDetail" >{{doctorDetail}}</el-form-item>
+                <div v-if="doctorDetail !=''">
+                  <el-form-item label="doctor Detail" >{{doctorDetail.email}}</el-form-item>
+                  <el-form-item label="Addresse" >{{doctorDetail.address.address}}</el-form-item>
+                </div>
+                
               </el-col>
             </el-form-item>
-            
-        </el-col>
-        <el-col :span="18" v-if="active==1">
-            <Prescription />
+            <Prescription v-if="active==1" />
+            <Attachments v-if="active==2" />
+            <el-form-item   v-if="active==3" >
+              <el-col :span="12">
+                <el-form-item label="Add notes" required>
+
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+          </el-form>
         </el-col>
       </el-row>
-    </el-form>
   </div>
 </template>
 
 <script>
-
-import { participantData as participantDataList } from '../core/form-data.js'
+import { mapGetters } from 'vuex'
+import { prescriptionData } from '../core/form-data.js'
 import Prescription from './steps/prescription'
+import Attachments from './steps/Attachments'
 import { fetchPatient , fetchDoctor} from '@/api/userlist'
-import axios from 'axios'
 
 export default {
-  components: {Prescription},
+  components: {Prescription,Attachments},
   data() {
     return {
       form: {},
@@ -98,12 +114,18 @@ export default {
     }
   },
   computed: {
+   ...mapGetters([
+      'caseData'
+    ])
     
   },
   mounted() {
     // console.log(participantDataList)
     this.getPatient()
     this.getDoctor()
+
+    if(isEmpty(this.caseData))
+      this.$store.dispatch('setCaseData',prescriptionData)
   },
   methods: {
     getPatient(){
@@ -133,7 +155,7 @@ export default {
         })
     },
     next() {
-        if (this.active++ > 2) 
+        if (this.active++ > 3) 
           {
             this.active = 0;
             this.buttonName='Next Step'
@@ -142,6 +164,13 @@ export default {
         {
           this.buttonName='Save'
         }
+      },
+    prev() {
+      this.buttonName='Next Step'
+        if (this.active == 0) {
+        }
+         else
+          this.active--
       },
     onSubmit() {
     },

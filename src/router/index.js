@@ -130,13 +130,13 @@ export const asyncRouterMap = [
         name: 'CreateCase',
         meta: { title: 'Create Case', icon: 'edit' }
       },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/doctor/edit'),
-        name: 'EditUser',
-        meta: { title: 'Edit User', noCache: true },
-        hidden: true
-      },
+      // {
+      //   path: 'edit/:id(\\d+)',
+      //   component: () => import('@/views/doctor/edit'),
+      //   name: 'EditUser',
+      //   meta: { title: 'Edit User', noCache: true },
+      //   hidden: true
+      // },
       {
         path: 'list',
         component: () => import('@/views/doctor/list'),
