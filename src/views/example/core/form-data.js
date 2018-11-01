@@ -1,5 +1,8 @@
 const participantData = [{
   $class: 'org.example.iqvia.IQVIA',
+  // dob: '',
+  // maritalStatus: '',
+  // sex: '',
   email: '',
   firstName: '',
   lastName: '',
@@ -15,6 +18,9 @@ const participantData = [{
 },
 {
   $class: 'org.example.iqvia.Doctor',
+  dob: '',
+  maritalStatus: '',
+  sex: '',
   email: '',
   firstName: '',
   lastName: '',
@@ -30,22 +36,7 @@ const participantData = [{
 },
 {
   $class: 'org.example.iqvia.Charity',
-  email: '',
   transferBalance: 0,
-  firstName: '',
-  lastName: '',
-  password: '',
-  address: {
-    $class: 'org.example.iqvia.Address',
-    country: '',
-    city: '',
-    address: '',
-    mobile: '',
-    zip: ''
-  }
-},
-{
-  $class: 'org.example.iqvia.Patient',
   email: '',
   accountBalance: 0,
   firstName: '',
@@ -61,7 +52,36 @@ const participantData = [{
   }
 },
 {
+  $class: 'org.example.iqvia.Patient',
+  patientInsurance: {
+    $class: 'org.example.iqvia.InsuranceStatus',
+    InsuranceStatus: 'false',
+    InsuranceClaimPercentage: '0',
+    InsuranceCompanyName: 'ABC Insurance Company',
+    InsuranceFile: 'Some file path'
+  },
+  dob: '',
+  maritalStatus: '',
+  sex: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  password: '',
+  address: {
+    $class: 'org.example.iqvia.Address',
+    country: '',
+    city: '',
+    address: '',
+    mobile: '',
+    zip: ''
+  }
+},
+{
   $class: 'org.example.iqvia.Pharma',
+  accountBalance: 0,
+  // dob: '',
+  // maritalStatus: '',
+  // sex: '',
   email: '',
   firstName: '',
   lastName: '',
