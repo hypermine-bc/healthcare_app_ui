@@ -3,7 +3,7 @@
         <el-col :span="24">
           <el-form-item label="Rx" >
             <el-select
-              v-model="formData"
+              v-model="caseData.rxList"
               multiple
               filterable
               remote
@@ -25,7 +25,7 @@
         </el-col>
         <el-col :span="24">
           <el-table
-            :data="formData"
+            :data="caseData.rxList"
             border            
              show-summary
              style="width: 100%">
@@ -56,6 +56,7 @@
 </template>
 <script>
 import { fetchAsset } from '@/api/pharma'
+import { mapGetters } from 'vuex'
 export default {
   components: { },
   data() {
@@ -105,10 +106,19 @@ export default {
       }
     }
   },
-  computed : {
-    rxlist(){
-
+   watch: {
+    caseData: {
+       handler: function(newValue) {
+                let CASEDATA = this.caseData
+                 this.$store.dispatch('setCaseData',CASEDATA)
+            },
+            deep: true
     }
+  },
+  computed : {
+   ...mapGetters([
+      'caseData'
+    ])
   }
 }
 </script>

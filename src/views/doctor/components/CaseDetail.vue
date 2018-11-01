@@ -13,7 +13,8 @@
             </el-step>
           </el-steps>
           <el-button style="margin-top: 12px;" @click="prev">Prev</el-button>
-          <el-button style="margin-top: 12px;" @click="next">{{buttonName}}</el-button>
+          <el-button style="margin-top: 12px;" v-if="active< 3" @click="next">{{buttonName}}</el-button>
+          <el-button style="margin-top: 12px;" v-if="active== 3" @click="onSubmit">Save</el-button>
         </el-col>
         <el-col :span="20" >
           <el-form ref="form" :model="form" label-width="120px" >
@@ -21,7 +22,7 @@
               <el-col :span="12">
                 <el-form-item label="Select Patient" required>
                   <el-select
-                    v-model="patientDetail"
+                    v-model="caseData.patientDetail"
                     :remote-method="remoteMethodPatient"
                     :loading="patientloading"
                     filterable
@@ -35,16 +36,16 @@
                       :value="item"/>
                   </el-select>
                 </el-form-item>
-                <div v-if="patientDetail !=''">
-                  <el-form-item label="Email" >{{patientDetail.email}}</el-form-item>
-                <el-form-item label="Addresse" >{{patientDetail.address.address}}</el-form-item>
+                <div v-if="caseData.patientDetail !=''">
+                  <el-form-item label="Email" >{{caseData.patientDetail.email}}</el-form-item>
+                <el-form-item label="Addresse" >{{caseData.patientDetail.address.address}}</el-form-item>
                 </div>
                 
               </el-col>
               <el-col :span="12">
                 <el-form-item label="Select Doctor" required>
                   <el-select
-                    v-model="doctorDetail"
+                    v-model="caseData.doctorDetail"
                     :remote-method="remoteMethodDoctor"
                     :loading="doctorloading"
                     filterable
@@ -58,19 +59,23 @@
                       :value="item"/>
                   </el-select>
                 </el-form-item>
-                <div v-if="doctorDetail !=''">
-                  <el-form-item label="doctor Detail" >{{doctorDetail.email}}</el-form-item>
-                  <el-form-item label="Addresse" >{{doctorDetail.address.address}}</el-form-item>
+                <div v-if="caseData.doctorDetail !=''">
+                  <el-form-item label="doctor Detail" >{{caseData.doctorDetail.email}}</el-form-item>
+                  <el-form-item label="Addresse" >{{caseData.doctorDetail.address.address}}</el-form-item>
                 </div>
-                
               </el-col>
             </el-form-item>
             <Prescription v-if="active==1" />
             <Attachments v-if="active==2" />
             <el-form-item   v-if="active==3" >
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="Add notes" required>
-
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 4, maxRows: 4}"
+                    placeholder="Please input"
+                    v-model="caseData.comment">
+                  </el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -86,7 +91,8 @@ import { prescriptionData } from '../core/form-data.js'
 import Prescription from './steps/prescription'
 import Attachments from './steps/Attachments'
 import { fetchPatient , fetchDoctor} from '@/api/userlist'
-
+import { createAsset } from '@/api/userlist'
+let CryptoJS = require("crypto-js");
 export default {
   components: {Prescription,Attachments},
   data() {
@@ -95,12 +101,13 @@ export default {
       isParticipantSelected: '',
       buttonName: 'Next Step',
       active: 0,
-      patientDetail: '',
-      doctorDetail: '',
+      // patientDetail: '',
+      // doctorDetail: '',
       patientlist: null,
       doctorlist: null,
       doctorloading: false,
       patientloading: false,
+      comments: "",
       listQuery: {
         page: 1,
         limit: 5,
@@ -114,22 +121,30 @@ export default {
   computed: {
    ...mapGetters([
       'caseData'
-    ])
+    ]),
   },
   mounted() {
     // console.log(participantDataList)
     this.getPatient()
     this.getDoctor()
 
-    if(isEmpty(this.caseData))
-      this.$store.dispatch('setCaseData',prescriptionData)
+    // if(isEmpty(this.caseData))
+      // this.$store.dispatch('setCaseData',prescriptionData)
+  },
+  watch: {
+    caseData: {
+       handler: function(newValue) {
+                let CASEDATA = this.caseData
+                 this.$store.dispatch('setCaseData',CASEDATA)
+            },
+            deep: true
+    }
   },
   methods: {
     getPatient() {
       fetchPatient(this.listQuery).then(e => {
         this.patientlist = e.data
-      })
-        .catch(e => {
+      }).catch(e => {
           console.log(e)
           this.$notify.error({
             title: 'Error',
@@ -152,7 +167,6 @@ export default {
         })
     },
     next() {
-
         if (this.active++ > 2) {
           this.active = 0
           this.buttonName = 'Next Step'
@@ -160,18 +174,47 @@ export default {
         if (this.active === 3) {
           this.buttonName = 'Save'
         }
-      },
+    },
     prev() {
       this.buttonName='Next Step'
         if (this.active == 0) {
         }
          else
           this.active--
-      }
     },
     onSubmit() {
+      let erro = []
+      let caseData = this.caseData
+      if(caseData.patientDetail =='')
+          erro.push('Patient Details')
+      if(caseData.patientDetail =='')
+          erro.push('Doctor Details')
+      if(caseData.rxList.length<=0)
+          erro.push('No medicine Prescribed')
+
+      if(erro.length>0){
+        this.$notify.error({
+            title: 'Error',
+            dangerouslyUseHTMLString: true,
+            message: 'Erro in '+JSON.stringify(erro)+' Please update'
+          })
+      }
+      else{
+
+        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(this.caseData), 'secret key 123');
+         console.log(ciphertext.toString())
+
+         console.log(prescriptionData)
+        // // Decrypt
+        // var bytes  = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
+        // var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+         
+        // console.log(decryptedData);
+      }
+
     },
     remoteMethodPatient(query) {
+
       if (query !== '') {
         this.patientloading = true
         setTimeout(() => {
@@ -181,10 +224,10 @@ export default {
               .indexOf(query.toLowerCase()) > -1
           })
         }, 200)
-      } else {
+      } else 
         this.options4p = []
-      }
     },
+
     remoteMethodDoctor(query) {
       if (query !== '') {
         this.doctorloading = true
@@ -195,12 +238,12 @@ export default {
               .indexOf(query.toLowerCase()) > -1
           })
         }, 200)
-      } else {
+      } else 
         this.options4d = []
-      }
     }
 
   }
+}
 
 </script>
 

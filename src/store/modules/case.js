@@ -2,7 +2,13 @@ import Cookies from 'js-cookie'
 
 const caseData = {
   state: {
-    caseData: {}
+    caseData: {
+      patientDetail: '',
+      doctorDetail: '',
+      rxList: [],
+      file: [],
+      comment: ''
+    }
   },
   mutations: {
     SET_CASEDATA: (state, CASEDATA) => {
