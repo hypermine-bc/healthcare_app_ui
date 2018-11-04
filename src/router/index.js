@@ -202,6 +202,30 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/charity',
+    component: Layout,
+    redirect: '/charity/notification',
+    name: 'Charity',
+    meta: {
+      title: 'Charity',
+      icon: 'charity-bold'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/charity/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' },
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/charity/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/pharma',
     component: Layout,
     redirect: '/pharma/medicine',
