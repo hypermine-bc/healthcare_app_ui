@@ -226,6 +226,30 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/insurance',
+    component: Layout,
+    redirect: '/insurance/notification',
+    name: 'Insurance',
+    meta: {
+      title: 'Insurance',
+      icon: 'health'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/insurance/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' },
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/insurance/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/pharma',
     component: Layout,
     redirect: '/pharma/medicine',
