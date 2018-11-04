@@ -178,6 +178,78 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/patient',
+    component: Layout,
+    redirect: '/patient/notification',
+    name: 'Patient',
+    meta: {
+      title: 'Patient',
+      icon: 'people'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/patient/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' }
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/patient/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/charity',
+    component: Layout,
+    redirect: '/charity/notification',
+    name: 'Charity',
+    meta: {
+      title: 'Charity',
+      icon: 'charity-bold'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/charity/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' }
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/charity/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/insurance',
+    component: Layout,
+    redirect: '/insurance/notification',
+    name: 'Insurance',
+    meta: {
+      title: 'Insurance',
+      icon: 'health'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/insurance/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' }
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/insurance/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/pharma',
     component: Layout,
     redirect: '/pharma/medicine',

@@ -222,7 +222,7 @@ export default {
         } catch (e) {
           console.log(`ERROR : precription asset creation failed. Error = ${e}`)
         }
-
+        createAsset(prescriptionData, '')
         // // Decrypt
         // var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
         // var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
