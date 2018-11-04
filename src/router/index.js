@@ -177,6 +177,30 @@ export const asyncRouterMap = [
       }
     ]
   },
+    {
+    path: '/patient',
+    component: Layout,
+    redirect: '/patient/notification',
+    name: 'Patient',
+    meta: {
+      title: 'Patient',
+      icon: 'people'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/patient/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' },
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/patient/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
   {
     path: '/pharma',
     component: Layout,

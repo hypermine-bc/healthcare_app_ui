@@ -204,6 +204,7 @@ export default {
         var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(this.caseData), 'secret key 123');
          console.log(ciphertext.toString())
 
+         console.log(this.case)
          console.log(prescriptionData)
          createAsset(prescriptionData,'')
         // // Decrypt
