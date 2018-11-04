@@ -25,38 +25,8 @@
               <el-input v-model="form.email"/>
             </el-form-item>
 
-            <div v-if="isParticipantSelected == '1' || isParticipantSelected == '2' || isParticipantSelected == '3'" >
-              <el-form-item label="Marital Status">
-                <el-select v-model="form.maritalStatus" placeholder="please select Marital Status">
-                  <el-option label="Option" value=""/>
-                  <el-option label="Married" value="Married"/>
-                  <el-option label="UnMarried" value="UnMarried"/>
-                  <el-option label="Divorced" value="Divorced"/>
-                </el-select>
-              </el-form-item>
-
-              <el-form-item label="Sex">
-                <el-select v-model="form.sex" placeholder="please select your sex">
-                  <el-option label="Option" value=""/>
-                  <el-option label="Male" value="Male"/>
-                  <el-option label="Female" value="Female"/>
-                  <el-option label="Others" value="Others"/>
-                </el-select>
-              </el-form-item>
-
-              <el-form-item label="Date of Birth">
-                <!-- <el-date-picker v-model="form.dob" type="date" placeholder="Pick a day"></el-date-picker>
-                -->
-                <el-input v-model="form.dob"/>
-              </el-form-item>
-            </div>
-
             <el-form-item label="Password">
               <el-input v-model="form.password" type="password"/>
-            </el-form-item>
-
-            <el-form-item label="Account balance">
-              <el-input v-model="form.password" type="Number"/>
             </el-form-item>
 
             <el-form-item label="Addresse">
@@ -84,7 +54,9 @@
 // import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 import { participantData as participantDataList } from '../core/form-data.js'
-import { createAsset } from '@/api/pharma.js'
+import axios from 'axios'
+import store from '@/store'
+const base_url = store.state.app.bcBaseUrl
 // const defaultForm = {
 //   status: 'draft',
 //   title: '', // 文章题目
@@ -126,8 +98,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      // axios.post(base_url + '/api/' + this.participant, this.form)
-      createAsset(this.form, this.participant)
+      
+      axios.post(base_url + '/api/' + this.participant, this.form)
         .then(e => {
           console.log(e)
           this.$notify({

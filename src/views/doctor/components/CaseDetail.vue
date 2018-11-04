@@ -205,6 +205,7 @@ export default {
          console.log(ciphertext.toString())
 
          console.log(prescriptionData)
+         createAsset(prescriptionData,'')
         // // Decrypt
         // var bytes  = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
         // var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));

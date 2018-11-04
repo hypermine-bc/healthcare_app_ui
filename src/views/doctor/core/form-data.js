@@ -4,10 +4,9 @@ const prescriptionData = {
   "user": "resource:org.example.iqvia.Patient#",
   "doctor": "resource:org.example.iqvia.Doctor#",
   "prescriptionId": "",
-  "medicineUsed": "",
+  "medUsed": [],
   "TransferStatus": "INIT",
-  "type": "TYPE1",
-  "comments": ""
+  "comments": "string"
 }
 
 export { prescriptionData }
