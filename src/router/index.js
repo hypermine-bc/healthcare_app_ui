@@ -84,37 +84,12 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/Prescription',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'Prescription',
-        meta: { title: 'Prescription', icon: 'tab' }
-      }
-    ]
-  },
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/svg-icons/index'),
-        name: 'Icons',
-        meta: { title: 'icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
 
-  /** When your routing table is too long, you can split it into small modules**/
-  componentsRouter,
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
-    {
+
+  { 
     path: '/doctor',
     component: Layout,
     redirect: '/doctor/list',
@@ -177,7 +152,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-    {
+  {
     path: '/patient',
     component: Layout,
     redirect: '/patient/notification',
@@ -273,6 +248,35 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/Prescription',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/tab/index'),
+        name: 'Prescription',
+        meta: { title: 'Prescription', icon: 'tab' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/svg-icons/index'),
+        name: 'Icons',
+        meta: { title: 'icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+
+  /** When your routing table is too long, you can split it into small modules**/
+  componentsRouter,
   // {
   //   path: '/error',
   //   component: Layout,
