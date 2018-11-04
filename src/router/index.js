@@ -114,7 +114,7 @@ export const asyncRouterMap = [
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
-    {
+  {
     path: '/doctor',
     component: Layout,
     redirect: '/doctor/list',
@@ -139,7 +139,7 @@ export const asyncRouterMap = [
       // },
       {
         path: 'list',
-        component: () => import('@/views/doctor/list'),
+        component: () => import('@/views/doctor/medicine/list'),
         name: 'CaseList',
         meta: { title: 'Case List', icon: 'list' }
       }

@@ -57,3 +57,11 @@ export function updateAsset(data, assetType, assetId) {
     data
   })
 }
+
+export function createAsset(data, assetType) {
+  return request({
+    url: base_url + '/api/' + assetType + '/',
+    method: 'post',
+    data
+  })
+}
