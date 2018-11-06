@@ -209,20 +209,23 @@ export default {
 
             console.log(prescriptionData)
             createAsset(prescriptionData, 'AddDoctorPrescription')
-            this.$notify({
-              title: 'Status',
-              message: 'Precription created.',
-              type: 'success',
-              duration: 2000
-            })
-            console.log(`SUCCESS : precription asset successfully created.`)
+              .then(e => {
+                this.$notify({
+                  title: 'Status',
+                  message: 'Precription created.',
+                  type: 'success',
+                  duration: 2000
+                })
+                console.log(`SUCCESS : precription asset successfully created.`)
+                this.$store.dispatch('setInitialCaseData', {})
+              })
           } else {
             console.log(`ERROR : precriptionData or caseData not found.`)
           }
         } catch (e) {
           console.log(`ERROR : precription asset creation failed. Error = ${e}`)
         }
-        createAsset(prescriptionData, '')
+        // createAsset(prescriptionData, '')
         // // Decrypt
         // var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
         // var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
