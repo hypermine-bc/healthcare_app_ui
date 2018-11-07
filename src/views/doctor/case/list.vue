@@ -4,6 +4,7 @@
       <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key">
         <keep-alive>
           <medicineList v-if="item.key=='ML'"/>
+          <usercaseList v-if="item.key=='NL'"/>
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -14,13 +15,14 @@
 <script>
 // import { fetchList } from '@/api/article'
 
-import medicineList from '../components/tab-panes/medicinelist'
+import medicineList from '../components/tab-panes/caselist'
+import usercaseList from '../components/tab-panes/usercaselist'
 
 // ddd
 
 export default {
   name: 'MedicineList',
-  components: { medicineList },
+  components: { medicineList, usercaseList },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -34,7 +36,8 @@ export default {
   data() {
     return {
       tabMapOptions: [
-        { label: 'Case List', key: 'ML' }
+        { label: 'Case List', key: 'ML' },
+        { label: 'User Notification List', key: 'NL' }
       ],
       activeName: 'ML',
       list: null,

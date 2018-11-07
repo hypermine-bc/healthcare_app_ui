@@ -84,18 +84,18 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/Prescription',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'Prescription',
-        meta: { title: 'Prescription', icon: 'tab' }
-      }
-    ]
-  },
+  // {
+  //   path: '/Prescription',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/tab/index'),
+  //       name: 'Prescription',
+  //       meta: { title: 'Prescription', icon: 'tab' }
+  //     }
+  //   ]
+  // },
   {
     path: '/icon',
     component: Layout,
@@ -130,18 +130,11 @@ export const asyncRouterMap = [
         name: 'CreateCase',
         meta: { title: 'Create Case', icon: 'edit' }
       },
-      // {
-      //   path: 'edit/:id(\\d+)',
-      //   component: () => import('@/views/doctor/edit'),
-      //   name: 'EditUser',
-      //   meta: { title: 'Edit User', noCache: true },
-      //   hidden: true
-      // },
       {
         path: 'list',
-        component: () => import('@/views/doctor/medicine/list'),
-        name: 'CaseList',
-        meta: { title: 'Case List', icon: 'list' }
+        component: () => import('@/views/doctor/case/list'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
       }
     ]
   },
@@ -150,30 +143,35 @@ export const asyncRouterMap = [
     path: '/register',
     component: Layout,
     redirect: '/register/list',
-    name: 'Register',
+    name: 'Admin',
     meta: {
-      title: 'Register',
+      title: 'Admin',
       icon: 'peoples'
     },
     children: [
       {
         path: 'create',
-        component: () => import('@/views/example/create'),
+        component: () => import('@/views/admin/create'),
         name: 'CreateUser',
         meta: { title: 'Create User', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
+        component: () => import('@/views/admin/edit'),
         name: 'EditUser',
         meta: { title: 'Edit User', noCache: true },
         hidden: true
       },
       {
         path: 'list',
-        component: () => import('@/views/example/userlist'),
+        component: () => import('@/views/admin/userlist'),
         name: 'UserList',
         meta: { title: 'User List', icon: 'list' }
+      }, {
+        path: 'notification',
+        component: () => import('@/views/admin/userlist'),
+        name: 'AdminNotification',
+        meta: { title: 'Notifications', icon: 'list' }
       }
     ]
   },

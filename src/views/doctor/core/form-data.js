@@ -8,4 +8,14 @@ const prescriptionData = {
   'comments': 'string'
 }
 
-export { prescriptionData }
+const patientSignatureData = {
+  '$class': 'org.example.iqvia.SignPatientPrescription',
+  'patAsset': 'resource:org.example.iqvia.PatientNotification#'
+}
+
+const doctorSignatureData = {
+  '$class': 'org.example.iqvia.SignDoctorPrescription',
+  'docAsset': 'resource:org.example.iqvia.DoctorPrescription#'
+}
+
+export { prescriptionData, patientSignatureData, doctorSignatureData }

@@ -24,11 +24,11 @@ import pharmaList from './components/tab-panes/userpharmalist'
 import iqviaList from './components/tab-panes/useriqvialist'
 import charityList from './components/tab-panes/usercharitylist'
 
-//ddd
+// ddd
 
 export default {
-  components: { patientList, doctorList,pharmaList,iqviaList,charityList},
   name: 'ArticleList',
+  components: { patientList, doctorList, pharmaList, iqviaList, charityList },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -63,12 +63,12 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-      })
+      // this.listLoading = true
+      // fetchList(this.listQuery).then(response => {
+      //   this.list = response.data.items
+      //   this.total = response.data.total
+      //   this.listLoading = false
+      // })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val

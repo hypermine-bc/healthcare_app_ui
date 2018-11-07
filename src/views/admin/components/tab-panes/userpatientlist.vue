@@ -8,14 +8,15 @@
       </el-table-column>
       <el-table-column align="center" label="Name" >
         <template slot-scope="scope">
-          <span>{{ scope.row.firstName}} {{scope.row.lastName}}</span>
+          <span>{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Addresse" >
         <template slot-scope="scope">
-          <span>{{ scope.row.address.address}}</span>
+          <span>{{ scope.row.address.address }}</span>
         </template>
       </el-table-column>
+
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -35,34 +36,34 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"/>
     </div>
-     <el-dialog title="Update User Details" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm"  :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <el-dialog :visible.sync="dialogFormVisible" title="Update User Details">
+      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-row class="createPost-main-container">
-	        <el-col :span="24">
-	 
-	          <div v-if="dialogFormVisible" >
-	            <el-form-item label="First Name">
-	              <el-input v-model="formData.firstName"/>
-	            </el-form-item>
+          <el-col :span="24">
 
-	            <el-form-item label="Last Name">
-	              <el-input v-model="formData.lastName"/>
-	            </el-form-item>
+            <div v-if="dialogFormVisible" >
+              <el-form-item label="First Name">
+                <el-input v-model="formData.firstName"/>
+              </el-form-item>
 
-	            <el-form-item label="Email">
-	              <el-input v-model="formData.email" :disabled="true" />
-	            </el-form-item>
+              <el-form-item label="Last Name">
+                <el-input v-model="formData.lastName"/>
+              </el-form-item>
 
-	            <el-form-item label="Password">
-	              <el-input v-model="formData.password" type="text"/>
-	            </el-form-item>
+              <el-form-item label="Email">
+                <el-input v-model="formData.email" :disabled="true" />
+              </el-form-item>
 
-	            <el-form-item label="Addresse">
-	              <el-input v-model="formData.address.address" type="textarea"/>
-	            </el-form-item>
-	          </div>
-	        </el-col>
-	      </el-row>
+              <el-form-item label="Password">
+                <el-input v-model="formData.password" type="text"/>
+              </el-form-item>
+
+              <el-form-item label="Addresse">
+                <el-input v-model="formData.address.address" type="textarea"/>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -72,9 +73,9 @@
   </div>
 </template>
 <script>
-import { fetchCharity ,updateUser } from '@/api/userlist'
+import { fetchPatient, updateUser } from '@/api/userlist'
 export default {
-  components: {  },
+  components: { },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -93,7 +94,7 @@ export default {
   },
   data() {
     return {
-    formData: {},
+      formData: {},
       isParticipantSelected: true,
       dialogFormVisible: false,
       list: null,
@@ -104,7 +105,7 @@ export default {
         sort: '+id'
       },
       loading: false,
-      total:0
+      total: 0
     }
   },
   created() {
@@ -114,8 +115,8 @@ export default {
     getList() {
       this.loading = true
       // this.$emit('create') // for test
-      fetchCharity(this.listQuery).then(response => {
-        console.log(response)
+      fetchPatient(this.listQuery).then(response => {
+        // console.log(response)
         this.list = response.data
         this.total = response.data.length
         this.loading = false
@@ -137,17 +138,17 @@ export default {
       this.getList()
     },
     updateData() {
-          const tempData = Object.assign({}, this.formData)
-          updateUser(tempData,'Charity').then(() => {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Status',
-              message: 'Updated Sucessfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-    },
+      const tempData = Object.assign({}, this.formData)
+      updateUser(tempData, 'Patient').then(() => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: 'Status',
+          message: 'Updated Sucessfully',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    }
   }
 }
 </script>

@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      
       axios.post(base_url + '/api/' + this.participant, this.form)
         .then(e => {
           console.log(e)

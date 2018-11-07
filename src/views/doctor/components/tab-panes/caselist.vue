@@ -6,6 +6,11 @@
           <span>{{ scope.row.caseId }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Patient Id" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.patientId }}</span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column align="center" label="Case Date" >
         <template slot-scope="scope">
           <span>{{ scope.row.caseDate }}</span>
@@ -38,7 +43,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">View</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,12 +59,15 @@
         @current-change="handleCurrentChange"/>
     </div>
     <el-dialog :visible.sync="dialogFormVisible" title="Update Case Details">
-      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width:; margin-left:50px;">
         <el-row class="createPost-main-container">
-          <el-col :span="24">
+          <el-col :span="12">
             <div v-if="dialogFormVisible" >
               <el-form-item label="CaseId" >
                 <el-input v-model="formData.caseId" disabled="disabled"/>
+              </el-form-item>
+              <el-form-item label="PatientId" >
+                <el-input v-model="formData.patientId" disabled="disabled"/>
               </el-form-item>
               <!-- <el-form-item label="CaseDate">
                 <el-input v-model="formData.caseDate" disabled="disabled">
@@ -82,17 +90,27 @@
               </el-form-item>
             </div>
           </el-col>
+          <el-col :span="12">
+            <div v-if="dialogFormVisible" >
+              <el-card :body-style="{'background-color':'#fce38a'}" shadow="never">
+                If you are Okay with the details please click on the Sign/update button bellow.
+                Other wise reject the prescription
+              </el-card>
+            </div>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
+        <el-button type="danger" icon="el-icon-delete" @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="updateData()">Update</el-button>
+        <el-button type="success" icon="el-icon-check" @click="signPrescription()" >Sign</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { fetchAsset, updateAsset } from '@/api/pharma'
+import { fetchAsset, updateAsset, createAsset } from '@/api/pharma'
+import { doctorSignatureData } from '../../core/form-data'
 const CryptoJS = require('crypto-js')
 export default {
 
@@ -135,12 +153,15 @@ export default {
         const cypherBytes = CryptoJS.AES.decrypt(element.comments, 'secret key 123')
         try {
           const caseObj = JSON.parse(cypherBytes.toString(CryptoJS.enc.Utf8))
+          const patientIdBuff = element.patientNoti.split('#')
+          const patientId = patientIdBuff[1]
           caseL.push({
             caseId: element.prescriptionId,
             patientName: caseObj.patientDetail.email,
             transferStatus: element.TransferStatus,
             doctorName: caseObj.doctorDetail.email,
             comment: caseObj.comment,
+            patientId: patientId,
             // caseDate : element.timestamp ,
             drugs: this.getCommaSepMeds(caseObj.rxList).trim(),
             data: element.comments
@@ -219,6 +240,19 @@ export default {
         this.$notify({
           title: 'Status',
           message: 'Updated Sucessfully',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    signPrescription() {
+      doctorSignatureData.docAsset = doctorSignatureData.docAsset + this.formData.caseId
+
+      createAsset(doctorSignatureData, 'SignDoctorPrescription').then((e) => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: 'Status',
+          message: 'Signed Sucessfully',
           type: 'success',
           duration: 2000
         })
