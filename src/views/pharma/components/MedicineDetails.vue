@@ -43,7 +43,7 @@
 
 <script>
 
-import { medicineData } from '../../example/core/form-data.js'
+import { medicineData } from '../../admin/core/form-data.js'
 import medList from '../core/medicinelist.js'
 import { createAsset } from '@/api/pharma.js'
 
@@ -69,28 +69,28 @@ export default {
     console.log(medList)
   },
   methods: {
-    clearForm(){
-      Object.keys(this.form).forEach(key=>{
-        this.form[key]=''
+    clearForm() {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = ''
       })
     },
     onSubmit() {
-      createAsset(this.form,'Medicine')
-      .then(e=>{
+      createAsset(this.form, 'Medicine')
+        .then(e => {
           this.$notify({
             title: 'Status',
             message: 'Created Sucessfully',
             type: 'success',
             duration: 2000
           })
-      })
-      .catch(err=>{
-        this.$notify.error({
+        })
+        .catch(err => {
+          this.$notify.error({
             title: 'Error',
             dangerouslyUseHTMLString: true,
             message: '<strong>' + JSON.stringify(err.message) + '</strong>'
           })
-      })
+        })
     },
     remoteMethod(query) {
       if (query !== '') {
