@@ -152,7 +152,6 @@ export default {
     caseList() {
       const caseL = []
       this.list.forEach(element => {
-        debugger
         const cypherBytes = CryptoJS.AES.decrypt(element.comments, 'secret key 123')
         try {
           const caseObj = JSON.parse(cypherBytes.toString(CryptoJS.enc.Utf8))
@@ -222,7 +221,6 @@ export default {
       this.getList()
     },
     signPrescription() {
-      debugger
       iqviaSignatureData.iqviaDocAsset = iqviaSignatureData.iqviaDocAsset + this.formData.caseId
       iqviaSignatureData.moneyPatientWanted = this.formData.pmoney
       console.log(iqviaSignatureData)
@@ -234,6 +232,7 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.getList()
       })
     }
   }
