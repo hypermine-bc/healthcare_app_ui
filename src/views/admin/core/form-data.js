@@ -57,8 +57,8 @@ const participantData = [{
     $class: 'org.example.iqvia.InsuranceStatus',
     InsuranceStatus: 'false',
     InsuranceClaimPercentage: '0',
-    InsuranceCompanyName: 'ABC Insurance Company',
-    InsuranceFile: 'Some file path'
+    InsuranceCompanyName: '',
+    InsuranceFile: ''
   },
   dob: '',
   maritalStatus: '',
