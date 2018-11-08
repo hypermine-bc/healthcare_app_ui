@@ -169,7 +169,7 @@ export const asyncRouterMap = [
         meta: { title: 'User List', icon: 'list' }
       }, {
         path: 'notification',
-        component: () => import('@/views/admin/userlist'),
+        component: () => import('@/views/admin/case/list'),
         name: 'AdminNotification',
         meta: { title: 'Notifications', icon: 'list' }
       }
