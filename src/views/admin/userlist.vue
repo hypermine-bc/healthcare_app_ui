@@ -8,6 +8,7 @@
           <doctorList v-if="item.key=='DC'"/>
           <pharmaList v-if="item.key=='PH'"/>
           <charityList v-if="item.key=='CH'"/>
+          <!-- <insuranceList v-if="item.key=='IS'"/> -->
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -23,6 +24,7 @@ import doctorList from './components/tab-panes/userdoctorlist'
 import pharmaList from './components/tab-panes/userpharmalist'
 import iqviaList from './components/tab-panes/useriqvialist'
 import charityList from './components/tab-panes/usercharitylist'
+// import insuranceList from './components/tab-panes/insuranceList'
 
 // ddd
 
@@ -46,7 +48,8 @@ export default {
         { label: 'Doctor', key: 'DC' },
         { label: 'Patient', key: 'PT' },
         { label: 'Charity', key: 'CH' },
-        { label: 'Pharma', key: 'PH' }
+        { label: 'Pharma', key: 'PH' },
+        { label: 'Insurance', key: 'IS' }
       ],
       activeName: 'IQ',
       list: null,

@@ -10,6 +10,7 @@
               <el-option label="Charity" value="2"/>
               <el-option label="Patient" value="3"/>
               <el-option label="Pharma" value="4"/>
+              <el-option label="Insurance" value="5"/>
             </el-select>
           </el-form-item>
           <div v-if="isParticipantSelected" >
