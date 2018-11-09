@@ -94,7 +94,23 @@ const participantData = [{
     mobile: '',
     zip: ''
   }
-}]
+},
+{
+  $class: 'org.example.iqvia.Insurance',
+  email: '',
+  firstName: '',
+  lastName: '',
+  password: '',
+  address: {
+    $class: 'org.example.iqvia.Address',
+    country: '',
+    city: '',
+    address: '',
+    mobile: '',
+    zip: ''
+  }
+}
+]
 
 const medicineData = {
   '$class': 'org.example.iqvia.Medicine',

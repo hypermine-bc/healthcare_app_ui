@@ -8,8 +8,8 @@
             <!-- <span>{{ o.notificationId }}</span> -->
             <div class="bottom clearfix">
               <el-row>
-                <el-col :span="11"> {{ o.userId }}</el-col>
-                <el-col :span="8" class="time"> ${{ o.reqMoney }} | <i :style="{ color: o.statusColor }" class="el-icon-circle-check" style="color:green"/> | {{ o.percentageCoverd }}%</el-col>
+                <el-col :span="11" style="font-size:13px"> {{ o.userId }}</el-col>
+                <el-col :span="8" class="time"> $ {{ o.reqMoney }} | <i :style="{ color: o.statusColor }" class="el-icon-circle-check" style="color:green"/> | {{ o.percentageCoverd }}%</el-col>
                 <el-col :span="3"> <el-button type="primary" size="mini" @click="handleUpdate(o)">View</el-button></el-col>
               </el-row>
             </div>
@@ -18,68 +18,115 @@
       </el-col>
     </el-row>
 
-    <div class="pagination-container">
-      <el-pagination
-        :current-page="listQuery.page"
-        :page-sizes="[10,20,30, 50]"
-        :page-size="listQuery.limit"
-        :total="total"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
-    </div>
     <el-dialog :visible.sync="dialogFormVisible" title="Update Case Details">
-      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width:; margin-left:50px;">
-        <el-row class="createPost-main-container">
-          <el-col :span="12">
-            <div v-if="dialogFormVisible" >
-              <el-form-item label="NotificationId" >
-                <el-input v-model="formData.notificationId" disabled="disabled"/>
+      <div
+        v-if="dialogFormVisible"
+        class="components-container"
+        style="
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    ">
+        <div class="left-container">
+          <fieldset>
+            <legend> Insurance:</legend>
+            <el-row style="">
+              <el-col :span="10"><label>Inurance Name</label></el-col>
+              <el-col :span="6"><label> Inurance </label></el-col>
+              <el-col :span="8"><label> File</label></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="10"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceCompanyName }}</el-col>
+              <el-col :span="6"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceClaimPercentage }}  %</el-col>
+              <el-col :span="8"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceFile }}</el-col>
+            </el-row>
+          </fieldset>
+
+          <fieldset>
+            <legend> Patient:</legend>
+            <el-row style="">
+              <el-col :span="10"><label>Name</label></el-col>
+              <el-col :span="6"><label> Dob  </label></el-col>
+              <el-col :span="8"><label> Email</label></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="10"> {{ formData.caseObj.patientDetail.firstName }} {{ formData.caseObj.patientDetail.lastName }}</el-col>
+              <el-col :span="6"> {{ formData.caseObj.patientDetail.dob }}</el-col>
+              <el-col :span="8"> {{ formData.caseObj.patientDetail.email }}</el-col>
+            </el-row>
+            <el-row style="">
+              <el-col :span="10"><label>Addresse</label></el-col>
+              <el-col :span="6"><label> Marital Status % </label></el-col>
+              <el-col :span="8"><label> Sex</label></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="10">{{ formData.caseObj.patientDetail.address.address }}</el-col>
+              <el-col :span="6"> {{ formData.caseObj.patientDetail.maritalStatus }}</el-col>
+              <el-col :span="8"> {{ formData.caseObj.patientDetail.sex }}</el-col>
+            </el-row>
+          </fieldset>
+
+          <fieldset>
+            <legend> Case Details :</legend>
+            <el-row style="">
+              <el-col :span="10"><label>Doctor Name</label></el-col>
+              <el-col :span="6"><label> Case ID </label></el-col>
+              <el-col :span="8"><label>Notificatiion Id  </label></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="10"> {{ formData.doctorName }}</el-col>
+              <el-col :span="6"> {{ formData.userId }}</el-col>
+              <el-col :span="8"> {{ formData.notificationId }}</el-col>
+            </el-row>
+            <el-row style="">
+              <el-col :span="10"><label>Comment</label></el-col>
+
+            </el-row>
+            <el-row>
+              <el-col :span="10"> {{ formData.comment }}</el-col>
+            </el-row>
+          </fieldset>
+          <fieldset>
+            <legend> Others :</legend>
+            <el-form ref="formData" :model="formData" label-width="30%">
+              <el-form-item label="Amount to be covered">
+                $ {{ formData.reqMoney }}
               </el-form-item>
-              <el-form-item label="User Id" >
-                <el-input v-model="formData.userId" disabled="disabled"/>
+              <el-form-item label="Raised Amount">
+                {{ formData.percentageCoverd }} %
               </el-form-item>
-              <el-form-item label="transferStatus" >
-                <el-input v-model="formData.transferStatus" disabled="disabled"/>
+              <el-form-item label="Amount covering ?">
+                <div class="block">
+                  <span class="demonstration"/>
+                  <el-slider
+                    v-model="value7"
+                    :step="5"
+                    :key="value7"
+                    show-stops/>
+                </div>
               </el-form-item>
-              <el-form-item label="Drugs">
-                <el-input v-model="formData.drugs" placeholder="Comma separated drug ids" disabled="disabled"/>
+              <el-form-item label="%">
+                {{ value7 }}
               </el-form-item>
-              <el-form-item label="Comment">
-                <el-input v-model="formData.comment" type="textarea" placeholder="Case's comment" disabled="disabled"/>
-              </el-form-item>
-              <el-form-item label="Amount Requested">
-                <el-input v-model="formData.reqMoney" disabled="disabled"/>
-              </el-form-item>
-              <el-form-item label="% Covered">
-                <el-slider v-model="formData.percentageCoverd"/>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div v-if="dialogFormVisible" >
-              <el-card :body-style="{'background-color':'#fce38a'}" shadow="never">
-                If you are Okay with the details please click on the Sign/update button bellow.
-                Other wise reject the prescriptiondisabled="disabled"
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
-      </el-form>
+            </el-form>
+          </fieldset>
+        </div>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" icon="el-icon-delete" @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="success" icon="el-icon-check" @click="signPrescription()" >Donate</el-button>
+        <el-button type="success" icon="el-icon-check" @click="updateData()" >Donate</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { fetchAsset, updateAsset } from '@/api/pharma'
+import splitPane from 'vue-splitpane'
+import { fetchAsset, createAsset } from '@/api/pharma'
 import { donateMoneyFromInsurance } from '../../core/form-data'
 const CryptoJS = require('crypto-js')
 export default {
-  components: { },
+  components: { splitPane },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -99,6 +146,8 @@ export default {
   data() {
     return {
       formData: {},
+      value7: 0,
+      userInsuranceData: {},
       isParticipantSelected: true,
       dialogFormVisible: false,
       list: [],
@@ -141,6 +190,7 @@ export default {
             userId: userId,
             drugs: this.getCommaSepMeds(caseObj.rxList).trim(),
             data: element.comments,
+            caseObj,
             statusColor: statusColor
           })
         } catch (e) {
@@ -154,6 +204,9 @@ export default {
     this.getList()
   },
   methods: {
+    resize() {
+      console.log('resize')
+    },
     getList() {
       this.loading = true
       fetchAsset(this.listQuery, 'InsuranceNotification').then(response => {
@@ -180,10 +233,10 @@ export default {
     },
     updateData() {
       donateMoneyFromInsurance.insuranceNoti = donateMoneyFromInsurance.insuranceNoti + this.formData.notificationId
-      donateMoneyFromInsurance.percentage = this.formData.percentageCoverd
+      donateMoneyFromInsurance.percentage = this.value7
       // bas yha  pe tumko theek karna hai ...phir donation ho jayega..
       // tempData.insuranceCompany = tempData.insuranceCompany +
-      updateAsset(donateMoneyFromInsurance, 'DonateMoneyFromInsurance').then(() => {
+      createAsset(donateMoneyFromInsurance, 'DonateMoneyFromInsurance').then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Status',
@@ -191,6 +244,7 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.getList()
       })
     },
     getCommaSepMeds(medsList) {
@@ -236,5 +290,31 @@ export default {
 
   .clearfix:after {
       clear: both
+  }
+
+  .components-container {
+    position: relative;
+    height: 50vh;
+  }
+
+  .el-dialog__body {
+    background-color:#e9eef3;
+  }
+
+  .right-container {
+    background-color: #FCE38A;
+    height: 200px;
+  }
+
+  .top-container {
+    background-color: #FCE38A;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bottom-container {
+    width: 100%;
+    background-color: #95E1D3;
+    height: 100%;
   }
 </style>

@@ -108,7 +108,7 @@ const medicineData = {
 const donateMoneyFromInsurance = {
   '$class': 'org.example.iqvia.DonateMoneyFromInsurance',
   'insuranceNoti': 'org.example.iqvia.InsuranceNotification#',
-  'insuranceCompany': 'org.example.iqvia.Insurance#',
+  'insuranceCompany': 'org.example.iqvia.Insurance#user_insurance@email.com',
   'percentage': 0
 }
 
