@@ -3,11 +3,7 @@
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key">
         <keep-alive>
-          <iqviaList v-if="item.key=='IQ'"/>
-          <patientList v-if="item.key=='PT'"/>
-          <doctorList v-if="item.key=='DC'"/>
-          <pharmaList v-if="item.key=='PH'"/>
-          <charityList v-if="item.key=='CH'"/>
+          <insuranceNotificationList v-if="item.key=='IQ'"/>
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -18,17 +14,17 @@
 <script>
 // import { fetchList } from '@/api/article'
 
-import patientList from './components/tab-panes/userpatientlist'
-import doctorList from './components/tab-panes/userdoctorlist'
-import pharmaList from './components/tab-panes/userpharmalist'
-import iqviaList from './components/tab-panes/useriqvialist'
-import charityList from './components/tab-panes/usercharitylist'
+// import patientList from './components/tab-panes/userpatientlist'
+// import doctorList from './components/tab-panes/userdoctorlist'
+// import pharmaList from './components/tab-panes/userpharmalist'
+import insuranceNotificationList from './components/tab-panes/useriqvialist'
+// import charityList from './components/tab-panes/usercharitylist'
 
 // ddd
 
 export default {
-  name: 'ArticleList',
-  components: { patientList, doctorList, pharmaList, iqviaList, charityList },
+  name: 'InsuranceNotification',
+  components: { insuranceNotificationList },
   filters: {
     statusFilter(status) {
       const statusMap = {

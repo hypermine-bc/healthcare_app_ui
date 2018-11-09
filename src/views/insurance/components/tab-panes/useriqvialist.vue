@@ -1,28 +1,22 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="Email" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Name" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Addresse" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.address.address }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
+    <el-row>
+      <el-col v-for="(o, index) in insuranceNotificationList" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
+        <el-card :body-style="{ padding: '0px' }">
+          <img src="https://finapp.co.in/wp-content/uploads/2016/12/best-life-insurance-company-india-best-life-insurance-policy.jpg" class="image">
+          <div style="padding: 14px;">
+            <!-- <span>{{ o.notificationId }}</span> -->
+            <div class="bottom clearfix">
+              <el-row>
+                <el-col :span="11"> {{ o.userId }}</el-col>
+                <el-col :span="8" class="time"> ${{ o.reqMoney }} | <i :style="{ color: o.statusColor }" class="el-icon-circle-check" style="color:green"/> | {{ o.percentageCoverd }}%</el-col>
+                <el-col :span="3"> <el-button type="primary" size="mini" @click="handleUpdate(o)">View</el-button></el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <div class="pagination-container">
       <el-pagination
@@ -35,44 +29,55 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"/>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" title="Update User Details">
-      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <el-dialog :visible.sync="dialogFormVisible" title="Update Case Details">
+      <el-form ref="dataForm" :model="formData" label-position="left" label-width="70px" style="width:; margin-left:50px;">
         <el-row class="createPost-main-container">
-          <el-col :span="24">
-
+          <el-col :span="12">
             <div v-if="dialogFormVisible" >
-              <el-form-item label="First Name">
-                <el-input v-model="formData.firstName"/>
+              <el-form-item label="NotificationId" >
+                <el-input v-model="formData.notificationId" disabled="disabled"/>
               </el-form-item>
-
-              <el-form-item label="Last Name">
-                <el-input v-model="formData.lastName"/>
+              <el-form-item label="User Id" >
+                <el-input v-model="formData.userId" disabled="disabled"/>
               </el-form-item>
-
-              <el-form-item label="Email">
-                <el-input v-model="formData.email" :disabled="true" />
+              <el-form-item label="transferStatus" >
+                <el-input v-model="formData.transferStatus" disabled="disabled"/>
               </el-form-item>
-
-              <el-form-item label="Password">
-                <el-input v-model="formData.password" type="text"/>
+              <el-form-item label="Drugs">
+                <el-input v-model="formData.drugs" placeholder="Comma separated drug ids" disabled="disabled"/>
               </el-form-item>
-
-              <el-form-item label="Addresse">
-                <el-input v-model="formData.address.address" type="textarea"/>
+              <el-form-item label="Comment">
+                <el-input v-model="formData.comment" type="textarea" placeholder="Case's comment" disabled="disabled"/>
               </el-form-item>
+              <el-form-item label="Amount Requested">
+                <el-input v-model="formData.reqMoney" disabled="disabled"/>
+              </el-form-item>
+              <el-form-item label="% Covered">
+                <el-slider v-model="formData.percentageCoverd"/>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div v-if="dialogFormVisible" >
+              <el-card :body-style="{'background-color':'#fce38a'}" shadow="never">
+                If you are Okay with the details please click on the Sign/update button bellow.
+                Other wise reject the prescriptiondisabled="disabled"
+              </el-card>
             </div>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
+        <el-button type="danger" icon="el-icon-delete" @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="success" icon="el-icon-check" @click="signPrescription()" >Donate</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { fetchIqvia, updateUser } from '@/api/userlist'
+import { fetchAsset, updateAsset } from '@/api/pharma'
+import { donateMoneyFromInsurance } from '../../core/form-data'
+const CryptoJS = require('crypto-js')
 export default {
   components: { },
   filters: {
@@ -96,7 +101,7 @@ export default {
       formData: {},
       isParticipantSelected: true,
       dialogFormVisible: false,
-      list: null,
+      list: [],
       listQuery: {
         page: 1,
         limit: 5,
@@ -107,14 +112,51 @@ export default {
       total: 0
     }
   },
+
+  computed: {
+    insuranceNotificationList() {
+      const caseL = []
+      this.list.forEach(element => {
+        const cypherBytes = CryptoJS.AES.decrypt(element.comments, 'secret key 123')
+        try {
+          const caseObj = JSON.parse(cypherBytes.toString(CryptoJS.enc.Utf8))
+          const userIdBuff = element.userDetail.split('#')
+          const userId = userIdBuff[1]
+          let statusColor = 'grey'
+          switch (element.TransferStatus) {
+            case 'INIT' : statusColor = 'grey'
+              break
+            case 'IN_PROGRESS' : statusColor = 'yellow'
+              break
+            default : statusColor = 'green'
+          }
+          caseL.push({
+            notificationId: element.notificationId,
+            reqMoney: element.reqMoney,
+            percentageCoverd: element.percentageCoverd,
+            patientName: caseObj.patientDetail.email,
+            transferStatus: element.TransferStatus,
+            doctorName: caseObj.doctorDetail.email,
+            comment: caseObj.comment,
+            userId: userId,
+            drugs: this.getCommaSepMeds(caseObj.rxList).trim(),
+            data: element.comments,
+            statusColor: statusColor
+          })
+        } catch (e) {
+          console.log(`ERROR : ${e}`)
+        }
+      })
+      return caseL
+    }
+  },
   created() {
     this.getList()
   },
   methods: {
     getList() {
       this.loading = true
-      // this.$emit('create') // for test
-      fetchIqvia(this.listQuery).then(response => {
+      fetchAsset(this.listQuery, 'InsuranceNotification').then(response => {
         console.log(response)
         this.list = response.data
         this.total = response.data.length
@@ -137,8 +179,11 @@ export default {
       this.getList()
     },
     updateData() {
-      const tempData = Object.assign({}, this.formData)
-      updateUser(tempData, 'IQVIA').then(() => {
+      donateMoneyFromInsurance.insuranceNoti = donateMoneyFromInsurance.insuranceNoti + this.formData.notificationId
+      donateMoneyFromInsurance.percentage = this.formData.percentageCoverd
+      // bas yha  pe tumko theek karna hai ...phir donation ho jayega..
+      // tempData.insuranceCompany = tempData.insuranceCompany +
+      updateAsset(donateMoneyFromInsurance, 'DonateMoneyFromInsurance').then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Status',
@@ -147,7 +192,49 @@ export default {
           duration: 2000
         })
       })
+    },
+    getCommaSepMeds(medsList) {
+      let commaSepMeds = ''
+      if (medsList && medsList.length > 0) {
+        medsList.forEach((elm) => {
+          commaSepMeds = commaSepMeds + elm.data.MedName + ','
+        })
+      } else {
+        console.log(`ERROR : No meds prescribed.`)
+      }
+      return commaSepMeds
     }
   }
 }
 </script>
+<style>
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+
+  .clearfix:after {
+      clear: both
+  }
+</style>
