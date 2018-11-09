@@ -3,7 +3,7 @@
     <el-row>
       <el-col v-for="(o, index) in insuranceNotificationList" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
         <el-card :body-style="{ padding: '0px' }">
-          <img src="https://finapp.co.in/wp-content/uploads/2016/12/best-life-insurance-company-india-best-life-insurance-policy.jpg" class="image">
+          <img src="https://lh5.googleusercontent.com/GErnXSrgfWyer6AuHU3HYOQIJ0-dGPlL207nAr3Et6zxpoqpHy0eR1y2XO339X_8GXaTW_q39KbnkTS7t8xD6_YOYrK7XUlqisYu=w2880-h1472-rw" class="image">
           <div style="padding: 14px;">
             <!-- <span>{{ o.notificationId }}</span> -->
             <div class="bottom clearfix">
@@ -18,7 +18,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :visible.sync="dialogFormVisible" title="Update Case Details">
+    <el-dialog :visible.sync="dialogFormVisible" title="Case Details" width="90%" height="80%">
       <div
         v-if="dialogFormVisible"
         class="components-container"
@@ -75,7 +75,7 @@
               <el-col :span="8"><label>Notificatiion Id  </label></el-col>
             </el-row>
             <el-row>
-              <el-col :span="10"> {{ formData.doctorName }}</el-col>
+              <el-col :span="10"> {{ formData.doctorName }} null</el-col>
               <el-col :span="6"> {{ formData.userId }}</el-col>
               <el-col :span="8"> {{ formData.notificationId }}</el-col>
             </el-row>
@@ -89,27 +89,40 @@
           </fieldset>
           <fieldset>
             <legend> Others :</legend>
-            <el-form ref="formData" :model="formData" label-width="30%">
-              <el-form-item label="Amount to be covered">
-                $ {{ formData.reqMoney }}
-              </el-form-item>
-              <el-form-item label="Raised Amount">
-                {{ formData.percentageCoverd }} %
-              </el-form-item>
-              <el-form-item label="Amount covering ?">
+              <el-row style="">
+              <el-col :span="8"><label>Amount to be covered</label></el-col>
+              <el-col :span="8"><label> Raised </label></el-col>
+              <el-col :span="6"><label> Raised in $</label></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8"> $ {{ formData.reqMoney }}</el-col>
+              <el-col :span="8"> {{ formData.percentageCoverd }} %</el-col>
+              <el-col :span="6"> $ {{ calculateAmount(formData.percentageCoverd,formData.reqMoney) }} </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8"> <label>Amount covering ?</label></el-col>
+              <el-col :span="8"> 
                 <div class="block">
                   <span class="demonstration"/>
                   <el-slider
                     v-model="value7"
                     :step="5"
                     :key="value7"
-                    show-stops/>
+                    show-stops
+                    :disabled="isSliderDisable"/>
                 </div>
+              </el-col>
+              <el-col :span="8"> 
+                <label>{{value7}} % </label>
+              </el-col>
+            </el-row>
+              <el-form-item label="Amount covering ?">
+                
               </el-form-item>
               <el-form-item label="%">
                 {{ value7 }}
               </el-form-item>
-            </el-form>
+            
           </fieldset>
         </div>
       </div>
@@ -163,6 +176,14 @@ export default {
   },
 
   computed: {
+    isSliderDisable(){
+      let l = 100 - this.formData.percentageCoverd
+
+      if(this.value7< l)
+        return false
+      else 
+        return true
+    },
     insuranceNotificationList() {
       const caseL = []
       this.list.forEach(element => {
@@ -204,6 +225,12 @@ export default {
     this.getList()
   },
   methods: {
+    calculateAmount(a,b)
+    {
+      let c = 0;
+      c = (a*b)/100
+      return c
+    },
     resize() {
       console.log('resize')
     },
