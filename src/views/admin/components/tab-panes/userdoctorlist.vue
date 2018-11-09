@@ -22,6 +22,14 @@
         </template>
       </el-table-column>
 
+      <!-- <el-table-column align="center" label="Actions" >
+        <template slot-scope="scope">
+          <router-link :to="'/example/edit/'+scope.row.email">
+            <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
+          </router-link>
+        </template>
+      </el-table-column> -->
+
     </el-table>
 
     <div class="pagination-container">
@@ -72,7 +80,7 @@
   </div>
 </template>
 <script>
-import { fetchIqvia, updateUser } from '@/api/userlist'
+import { fetchDoctor, updateUser } from '@/api/userlist'
 export default {
   components: { },
   filters: {
@@ -113,8 +121,7 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      // this.$emit('create') // for test
-      fetchIqvia(this.listQuery).then(response => {
+      fetchDoctor(this.listQuery).then(response => {
         console.log(response)
         this.list = response.data
         this.total = response.data.length
@@ -138,7 +145,7 @@ export default {
     },
     updateData() {
       const tempData = Object.assign({}, this.formData)
-      updateUser(tempData, 'IQVIA').then(() => {
+      updateUser(tempData, 'Doctor').then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Status',

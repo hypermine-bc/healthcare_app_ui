@@ -57,8 +57,8 @@ const participantData = [{
     $class: 'org.example.iqvia.InsuranceStatus',
     InsuranceStatus: 'false',
     InsuranceClaimPercentage: '0',
-    InsuranceCompanyName: 'ABC Insurance Company',
-    InsuranceFile: 'Some file path'
+    InsuranceCompanyName: '',
+    InsuranceFile: ''
   },
   dob: '',
   maritalStatus: '',
@@ -105,4 +105,10 @@ const medicineData = {
   'MedPrice': 0
 }
 
-export { medicineData, participantData }
+const iqviaSignatureData = {
+  '$class': 'org.example.iqvia.SignIqviaPrescription',
+  'iqviaDocAsset': 'org.example.iqvia.IQVIADoctorNotification#',
+  'moneyPatientWanted': 0
+}
+
+export { medicineData, participantData, iqviaSignatureData }

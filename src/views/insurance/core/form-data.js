@@ -105,4 +105,11 @@ const medicineData = {
   'MedPrice': 0
 }
 
-export { medicineData, participantData }
+const donateMoneyFromInsurance = {
+  '$class': 'org.example.iqvia.DonateMoneyFromInsurance',
+  'insuranceNoti': 'org.example.iqvia.InsuranceNotification#',
+  'insuranceCompany': 'org.example.iqvia.Insurance#',
+  'percentage': 0
+}
+
+export { medicineData, participantData, donateMoneyFromInsurance }

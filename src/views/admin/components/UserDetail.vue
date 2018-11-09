@@ -10,6 +10,7 @@
               <el-option label="Charity" value="2"/>
               <el-option label="Patient" value="3"/>
               <el-option label="Pharma" value="4"/>
+              <el-option label="Insurance" value="5"/>
             </el-select>
           </el-form-item>
           <div v-if="isParticipantSelected" >
@@ -20,6 +21,53 @@
             <el-form-item label="Last Name">
               <el-input v-model="form.lastName"/>
             </el-form-item>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="Marital Status">
+                  <el-select v-model="form.maritalStatus" placeholder="Select">
+                    <el-option label="Option" value=" "/>
+                    <el-option label="Married" value="married"/>
+                    <el-option label="Single" value="single"/>
+                    <el-option label="Divorced" value="divorced"/>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="DOB">
+                  <el-input v-model="form.dob"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="Sex">
+                  <el-select v-model="form.sex" placeholder="Select">
+                    <el-option label="Option" value=" "/>
+                    <el-option label="Male" value="male"/>
+                    <el-option label="Female" value="female"/>
+                    <el-option label="Others" value="others"/>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <p v-if="isParticipantSelected==3">
+
+              <el-form-item label="Insurance">
+                <el-radio-group v-model="hasInsurance" size="mini">
+                  <el-radio-button label="Yes" />
+                  <el-radio-button label="No" />
+                </el-radio-group>
+              </el-form-item>
+            </p>
+            <div v-if="hasInsurance=='Yes'" style="border: black 1px solid;padding: 10px;margin-left: 120px;">
+              <el-form-item label="Amount">
+                <el-input v-model="form.patientInsurance.InsuranceClaimPercentage" type="number" style="width:90px" placeholder="Amount in %age"/> %
+              </el-form-item>
+              <el-form-item label="Name">
+                <el-input v-model="form.patientInsurance.InsuranceCompanyName" type="text" placeholder="Company name"/>
+              </el-form-item>
+              <el-form-item label="File Document">
+                <el-input v-model="form.patientInsurance.InsuranceFile" type="file" size="mini"/>
+              </el-form-item>
+            </div>
 
             <el-form-item label="Email">
               <el-input v-model="form.email"/>
@@ -75,7 +123,8 @@ export default {
   data() {
     return {
       // form: participantDataList[0],
-      isParticipantSelected: ''
+      isParticipantSelected: '',
+      hasInsurance: false
     }
   },
   computed: {
@@ -98,9 +147,11 @@ export default {
   },
   methods: {
     onSubmit() {
-      
+      if (this.hasInsurance === 'Yes') { this.form.patientInsurance.InsuranceStatus = true }
+
       axios.post(base_url + '/api/' + this.participant, this.form)
         .then(e => {
+          this.form = participantDataList[0]
           console.log(e)
           this.$notify({
             title: 'Success',
@@ -110,6 +161,7 @@ export default {
         })
         .catch(e => {
           console.log(e)
+          this.form = participantDataList[0]
           this.$notify.error({
             title: 'Error',
             dangerouslyUseHTMLString: true,
