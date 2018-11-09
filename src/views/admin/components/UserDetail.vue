@@ -21,8 +21,8 @@
             <el-form-item label="Last Name">
               <el-input v-model="form.lastName"/>
             </el-form-item>
-            <el-row>
-              <el-col :span="8">
+            <el-row v-if="isParticipantSelected !=5">
+              <el-col :span="8" >
                 <el-form-item label="Marital Status">
                   <el-select v-model="form.maritalStatus" placeholder="Select">
                     <el-option label="Option" value=" "/>
