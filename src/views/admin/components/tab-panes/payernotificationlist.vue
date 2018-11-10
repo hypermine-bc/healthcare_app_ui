@@ -29,8 +29,8 @@
     margin-bottom: 0px;
     ">
         <el-row>
-          <el-col :span="14">
-            <div class="left-container" style="float:left;">
+          <el-col :span="16">
+            <div class="left-container">
               <fieldset>
                 <legend> General:</legend>
                 <el-row style="">
@@ -108,7 +108,7 @@
               </fieldset>
             </div>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="8">
             <div style="width:60%; height:60%; padding:5px">
               <Chart :data="[20,30,50]"/>
             </div>
