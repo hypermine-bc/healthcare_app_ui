@@ -28,85 +28,94 @@
     margin-top: 0px;
     margin-bottom: 0px;
     ">
+        <el-row>
+          <el-col :span="14">
+            <div class="left-container" style="float:left;">
+              <fieldset>
+                <legend> General:</legend>
+                <el-row style="">
+                  <el-col :span="10"><label>Case Id</label></el-col>
+                  <el-col :span="6"><label> Patient Id  </label></el-col>
+                  <el-col :span="8"><label> Notification Id</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> {{ formData.docPrescriptionId }} </el-col>
+                  <el-col :span="6"> {{ formData.userId }}</el-col>
+                  <el-col :span="8"> {{ formData.notificationId }}</el-col>
+                </el-row>
+              </fieldset>
+              <fieldset v-if="hasInsurance">
+                <legend> Insurance:</legend>
+                <el-row style="">
+                  <el-col :span="10"><label>Inurance Name</label></el-col>
+                  <el-col :span="6"><label> Inurance </label></el-col>
+                  <el-col :span="8"><label> File</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceCompanyName }}</el-col>
+                  <el-col :span="6"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceClaimPercentage }}  %</el-col>
+                  <el-col :span="8"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceFile }}</el-col>
+                </el-row>
+              </fieldset>
 
-        <div class="left-container">
-          <fieldset>
-            <legend> General:</legend>
-            <el-row style="">
-              <el-col :span="10"><label>Case Id</label></el-col>
-              <el-col :span="6"><label> Patient Id  </label></el-col>
-              <el-col :span="8"><label> Notification Id</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10"> {{ formData.docPrescriptionId }} </el-col>
-              <el-col :span="6"> {{ formData.userId }}</el-col>
-              <el-col :span="8"> {{ formData.notificationId }}</el-col>
-            </el-row>
-          </fieldset>
-          <fieldset v-if="hasInsurance">
-            <legend> Insurance:</legend>
-            <el-row style="">
-              <el-col :span="10"><label>Inurance Name</label></el-col>
-              <el-col :span="6"><label> Inurance </label></el-col>
-              <el-col :span="8"><label> File</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceCompanyName }}</el-col>
-              <el-col :span="6"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceClaimPercentage }}  %</el-col>
-              <el-col :span="8"> {{ formData.caseObj.patientDetail.patientInsurance.InsuranceFile }}</el-col>
-            </el-row>
-          </fieldset>
+              <fieldset>
+                <legend> Patient:</legend>
+                <el-row style="">
+                  <el-col :span="10"><label>Name</label></el-col>
+                  <el-col :span="6"><label> Dob  </label></el-col>
+                  <el-col :span="8"><label> Email</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> {{ formData.caseObj.patientDetail.firstName }} {{ formData.caseObj.patientDetail.lastName }}</el-col>
+                  <el-col :span="6"> {{ formData.caseObj.patientDetail.dob }}</el-col>
+                  <el-col :span="8"> {{ formData.caseObj.patientDetail.email }}</el-col>
+                </el-row>
+                <el-row style="">
+                  <el-col :span="10"><label>Address</label></el-col>
+                  <el-col :span="6"><label> Marital Status % </label></el-col>
+                  <el-col :span="8"><label> Sex</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10">{{ formData.caseObj.patientDetail.address.address }}</el-col>
+                  <el-col :span="6"> {{ formData.caseObj.patientDetail.maritalStatus }}</el-col>
+                  <el-col :span="8"> {{ formData.caseObj.patientDetail.sex }}</el-col>
+                </el-row>
+              </fieldset>
 
-          <fieldset>
-            <legend> Patient:</legend>
-            <el-row style="">
-              <el-col :span="10"><label>Name</label></el-col>
-              <el-col :span="6"><label> Dob  </label></el-col>
-              <el-col :span="8"><label> Email</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10"> {{ formData.caseObj.patientDetail.firstName }} {{ formData.caseObj.patientDetail.lastName }}</el-col>
-              <el-col :span="6"> {{ formData.caseObj.patientDetail.dob }}</el-col>
-              <el-col :span="8"> {{ formData.caseObj.patientDetail.email }}</el-col>
-            </el-row>
-            <el-row style="">
-              <el-col :span="10"><label>Address</label></el-col>
-              <el-col :span="6"><label> Marital Status % </label></el-col>
-              <el-col :span="8"><label> Sex</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10">{{ formData.caseObj.patientDetail.address.address }}</el-col>
-              <el-col :span="6"> {{ formData.caseObj.patientDetail.maritalStatus }}</el-col>
-              <el-col :span="8"> {{ formData.caseObj.patientDetail.sex }}</el-col>
-            </el-row>
-          </fieldset>
+              <fieldset>
+                <legend> Funds Raised:</legend>
+                <el-row style="">
+                  <el-col :span="10"><label>Amount to be covered</label></el-col>
+                  <el-col :span="6"><label>Total Raised </label></el-col>
+                  <el-col :span="6"><label>Total Raised in $</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> $ {{ formData.reqMoney }}</el-col>
+                  <el-col :span="6"> {{ formData.donate.totalPer }} %</el-col>
+                  <el-col :span="6"> $ {{ formData.donate.totalAmount }} </el-col>
+                </el-row>
+                <el-row style="">
+                  <el-col :span="10"><label>Insurance Donation</label></el-col>
+                  <el-col :span="6"><label>Pharma Donation</label></el-col>
+                  <el-col :span="6"><label>Charity Donation</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> $ {{ formData.donate.insurance }} %</el-col>
+                  <el-col :span="6"> {{ formData.donate.pharma }} %</el-col>
+                  <el-col :span="6"> $ {{ formData.donate.charity }} % </el-col>
+                </el-row>
 
-          <fieldset>
-            <legend> Funds Raised:</legend>
-            <el-row style="">
-              <el-col :span="10"><label>Amount to be covered</label></el-col>
-              <el-col :span="6"><label>Total Raised </label></el-col>
-              <el-col :span="6"><label>Total Raised in $</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10"> $ {{ formData.reqMoney }}</el-col>
-              <el-col :span="6"> {{ formData.donate.totalPer }} %</el-col>
-              <el-col :span="6"> $ {{ formData.donate.totalAmount }} </el-col>
-            </el-row>
-            <el-row style="">
-              <el-col :span="10"><label>Insurance Donation</label></el-col>
-              <el-col :span="6"><label>Pharma Donation</label></el-col>
-              <el-col :span="6"><label>Charity Donation</label></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10"> $ {{ formData.donate.insurance }} %</el-col>
-              <el-col :span="6"> {{ formData.donate.pharma }} %</el-col>
-              <el-col :span="6"> $ {{ formData.donate.charity }} % </el-col>
-            </el-row>
-
-          </fieldset>
-        </div>
+              </fieldset>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div style="width:60%; height:60%; padding:5px">
+              <Chart :data="[20,30,50]"/>
+            </div>
+          </el-col>
+        </el-row>
       </div>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" icon="el-icon-delete" @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="success" icon="el-icon-check" @click="updateData()" >Donate</el-button>
@@ -115,12 +124,13 @@
   </div>
 </template>
 <script>
+import Chart from '../chart'
 import splitPane from 'vue-splitpane'
 import { fetchAsset, createAsset } from '@/api/pharma'
 import { donateMoneyFromInsurance } from '../../core/form-data'
 const CryptoJS = require('crypto-js')
 export default {
-  components: { splitPane },
+  components: { splitPane, Chart },
   filters: {
     statusFilter(status) {
       const statusMap = {
