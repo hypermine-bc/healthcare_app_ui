@@ -39,10 +39,6 @@ export default {
     return {
       tabMapOptions: [
         { label: 'Case', key: 'IQ' },
-        { label: 'Doctor', key: 'DC' },
-        { label: 'Patient', key: 'PT' },
-        { label: 'Charity', key: 'CH' },
-        { label: 'Pharma', key: 'PH' }
       ],
       activeName: 'IQ',
       list: null,

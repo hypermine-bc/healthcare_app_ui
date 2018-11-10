@@ -268,6 +268,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/pharma/medicine/list'),
         name: 'DrugList',
         meta: { title: 'Drug List', icon: 'list' }
+      },
+      {
+        path: 'notification',
+        component: () => import('@/views/pharma/notificationList'),
+        name: 'Notifications',
+        meta: { title: 'Notifications', icon: 'list' }
       }
     ]
   },

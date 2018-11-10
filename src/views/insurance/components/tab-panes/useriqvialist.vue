@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col v-for="(o, index) in insuranceNotificationList" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
+      <el-col v-for="(o, index) in insuranceNotificationList" :span="8" :key="o" style="padding:5px">
         <el-card :body-style="{ padding: '0px' }">
           <img src="https://lh5.googleusercontent.com/GErnXSrgfWyer6AuHU3HYOQIJ0-dGPlL207nAr3Et6zxpoqpHy0eR1y2XO339X_8GXaTW_q39KbnkTS7t8xD6_YOYrK7XUlqisYu=w2880-h1472-rw" class="image">
           <div style="padding: 14px;">
@@ -29,7 +29,7 @@
     margin-bottom: 0px;
     ">
         <div class="left-container">
-          <fieldset>
+          <fieldset v-if="hasInsurance">
             <legend> Insurance:</legend>
             <el-row style="">
               <el-col :span="10"><label>Inurance Name</label></el-col>
@@ -184,6 +184,17 @@ export default {
       else 
         return true
     },
+    hasInsurance(){
+      if(this.dialogFormVisible===true){
+        if(this.formData.caseObj.patientDetail.patientInsurance.hasOwnProperty('InsuranceStatus')){
+          return this.formData.caseObj.patientDetail.patientInsurance.InsuranceStatus
+        }
+        else
+          return false
+      }
+      else 
+        return false
+    },
     insuranceNotificationList() {
       const caseL = []
       this.list.forEach(element => {
@@ -196,7 +207,7 @@ export default {
           switch (element.TransferStatus) {
             case 'INIT' : statusColor = 'grey'
               break
-            case 'IN_PROGRESS' : statusColor = 'yellow'
+            case 'IN_PROGRESS' : statusColor = 'orange'
               break
             default : statusColor = 'green'
           }
@@ -271,7 +282,7 @@ export default {
           type: 'success',
           duration: 2000
         })
-        this.getList()
+        location.reload();
       })
     },
     getCommaSepMeds(medsList) {

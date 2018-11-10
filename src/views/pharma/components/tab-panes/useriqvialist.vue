@@ -136,7 +136,7 @@
 <script>
 import splitPane from 'vue-splitpane'
 import { fetchAsset, createAsset } from '@/api/pharma'
-import { donateMoneyFromCharity } from '../../core/form-data'
+import { donateMoneyFromPharma } from '../../core/form-data'
 const CryptoJS = require('crypto-js')
 export default {
   components: { splitPane },
@@ -247,7 +247,7 @@ export default {
     },
     getList() {
       this.loading = true
-      fetchAsset(this.listQuery, 'CharityNotification').then(response => {
+      fetchAsset(this.listQuery, 'PharmaNotification').then(response => {
         console.log(response)
         this.list = response.data
         this.total = response.data.length
@@ -270,11 +270,11 @@ export default {
       this.getList()
     },
     updateData() {
-      donateMoneyFromCharity.charityNoti = donateMoneyFromCharity.charityNoti + this.formData.notificationId
-      donateMoneyFromCharity.percentage = this.value7
+      donateMoneyFromPharma.pharmaNoti = donateMoneyFromPharma.pharmaNoti + this.formData.notificationId
+      donateMoneyFromPharma.percentage = this.value7
       // bas yha  pe tumko theek karna hai ...phir donation ho jayega..
       // tempData.insuranceCompany = tempData.insuranceCompany +
-      createAsset(donateMoneyFromCharity, 'DonateMoneyFromCharity').then(() => {
+      createAsset(donateMoneyFromPharma, 'DonateMoneyFromPharma').then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Status',
