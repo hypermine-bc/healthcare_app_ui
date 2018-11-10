@@ -5,6 +5,7 @@
         <keep-alive>
           <medicineList v-if="item.key=='ML'"/>
           <usercaseList v-if="item.key=='NL'"/>
+          <payerNotificationList v-if="item.key=='PNL'"/>
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -17,12 +18,13 @@
 
 import medicineList from '../components/tab-panes/caselist'
 import usercaseList from '../components/tab-panes/usercaselist'
+import payerNotificationList from '../components/tab-panes/payernotificationlist'
 
 // ddd
 
 export default {
   name: 'MedicineList',
-  components: { medicineList, usercaseList },
+  components: { medicineList, usercaseList, payerNotificationList },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -37,7 +39,8 @@ export default {
     return {
       tabMapOptions: [
         { label: 'Doctor Notification List', key: 'ML' },
-        { label: 'User Notification List', key: 'NL' }
+        { label: 'User Notification List', key: 'NL' },
+        { label: 'Payers Notification List', key: 'PNL' }
       ],
       activeName: 'ML',
       list: null,
