@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col v-for="(o) in payerNotificationList" :span="8" :key="o" style="padding:5px">
+      <el-col v-for="(o,i) in payerNotificationList" :span="8" :key="i" style="padding:5px">
         <el-card :body-style="{ padding: '0px' }">
           <img src="src/assets/HI.png" class="image">
           <div style="padding: 14px;">
@@ -18,7 +18,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :visible.sync="dialogFormVisible" title="Details" width="90%" height="80%">
+    <el-dialog :visible.sync="dialogFormVisible" title="Quotation" width="90%" height="80%">
       <div
         v-if="dialogFormVisible"
         class="components-container"
@@ -42,6 +42,45 @@
                   <el-col :span="10"> {{ formData.docPrescriptionId }} </el-col>
                   <el-col :span="6"> {{ formData.userId }}</el-col>
                   <el-col :span="8"> {{ formData.notificationId }}</el-col>
+                </el-row>
+              </fieldset>
+              <fieldset>
+                <legend> Funds Raised:</legend>
+                <el-row style="">
+                  <el-col :span="10"><label>Amount to be covered</label></el-col>
+                  <el-col :span="6"><label>Total Raised </label></el-col>
+                  <el-col :span="6"><label>Total Raised in $</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> $ {{ formData.reqMoney }}</el-col>
+                  <el-col :span="6"> {{ formData.donate.totalPer }} %</el-col>
+                  <el-col :span="6"> $ {{ formData.donate.totalAmount }} </el-col>
+                </el-row>
+                <el-row style="">
+                  <el-col :span="10"><label>Insurance Donation</label></el-col>
+                  <el-col :span="6"><label>Pharma Donation</label></el-col>
+                  <el-col :span="6"><label>Charity Donation</label></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="10"> $ {{ formData.donate.insurance }} %</el-col>
+                  <el-col :span="6"> {{ formData.donate.pharma }} %</el-col>
+                  <el-col :span="6"> $ {{ formData.donate.charity }} % </el-col>
+                </el-row>
+              </fieldset>
+              <fieldset>
+                <legend>Create Quotation</legend>
+                <el-row>
+                  <el-col :span="12"> <label>Amount You wanna create Quotation for ? %</label></el-col>
+                  <el-col :span="12">
+                    <div class="block">
+                      <span class="demonstration"/>
+                      <el-slider
+                        v-model="value7"
+                        :step="5"
+                        :key="value7"
+                        show-input/>
+                    </div>
+                  </el-col>
                 </el-row>
               </fieldset>
               <fieldset v-if="hasInsurance">
@@ -81,44 +120,20 @@
                   <el-col :span="8"> {{ formData.caseObj.patientDetail.sex }}</el-col>
                 </el-row>
               </fieldset>
-
-              <fieldset>
-                <legend> Funds Raised:</legend>
-                <el-row style="">
-                  <el-col :span="10"><label>Amount to be covered</label></el-col>
-                  <el-col :span="6"><label>Total Raised </label></el-col>
-                  <el-col :span="6"><label>Total Raised in $</label></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="10"> $ {{ formData.reqMoney }}</el-col>
-                  <el-col :span="6"> {{ formData.donate.totalPer }} %</el-col>
-                  <el-col :span="6"> $ {{ formData.donate.totalAmount }} </el-col>
-                </el-row>
-                <el-row style="">
-                  <el-col :span="10"><label>Insurance Donation</label></el-col>
-                  <el-col :span="6"><label>Pharma Donation</label></el-col>
-                  <el-col :span="6"><label>Charity Donation</label></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="10"> $ {{ formData.donate.insurance }} %</el-col>
-                  <el-col :span="6"> {{ formData.donate.pharma }} %</el-col>
-                  <el-col :span="6"> $ {{ formData.donate.charity }} % </el-col>
-                </el-row>
-
-              </fieldset>
             </div>
           </el-col>
           <el-col :span="8">
             <div style="width:60%; height:60%; padding:5px">
-              <Chart :data="[20,30,50]"/>
+              <Chart :dataset="charData.dataset" :labels="charData.labels "/>
             </div>
+
           </el-col>
         </el-row>
       </div>
 
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" icon="el-icon-delete" @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="success" icon="el-icon-check" @click="updateData()" >Donate</el-button>
+        <el-button type="success" icon="el-icon-check" @click="updateData()" >Create Quote</el-button>
       </div>
     </el-dialog>
   </div>
@@ -127,7 +142,7 @@
 import Chart from '../chart'
 import splitPane from 'vue-splitpane'
 import { fetchAsset, createAsset } from '@/api/pharma'
-import { donateMoneyFromInsurance } from '../../core/form-data'
+import { confirmPayerNotificationData } from '../../core/form-data'
 const CryptoJS = require('crypto-js')
 export default {
   components: { splitPane, Chart },
@@ -166,6 +181,17 @@ export default {
     }
   },
   computed: {
+    charData() {
+      const data = {}
+      data.dataset = []
+      data.labels = []
+      if (this.dialogFormVisible) {
+        data.labels = Object.keys(this.formData.donate).slice(0, -2)
+        data.dataset = Object.values(this.formData.donate).slice(0, -2)
+      }
+
+      return data
+    },
     isSliderDisable() {
       const l = 100 - this.formData.percentageCoverd
 
@@ -293,11 +319,11 @@ export default {
       this.getList()
     },
     updateData() {
-      donateMoneyFromInsurance.insuranceNoti = donateMoneyFromInsurance.insuranceNoti + this.formData.notificationId
-      donateMoneyFromInsurance.percentage = this.value7
+      confirmPayerNotificationData.payerNoti = confirmPayerNotificationData.payerNoti + this.formData.notificationId
+      confirmPayerNotificationData.percentage = this.value7
       // bas yha  pe tumko theek karna hai ...phir donation ho jayega..
       // tempData.insuranceCompany = tempData.insuranceCompany +
-      createAsset(donateMoneyFromInsurance, 'DonateMoneyFromInsurance').then(() => {
+      createAsset(confirmPayerNotificationData, 'ConfirmPayerNotification').then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Status',
@@ -305,7 +331,8 @@ export default {
           type: 'success',
           duration: 2000
         })
-        location.reload()
+        this.getList()
+        // location.reload()
       })
     },
     getCommaSepMeds(medsList) {

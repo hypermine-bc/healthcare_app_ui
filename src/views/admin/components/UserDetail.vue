@@ -2,7 +2,7 @@
   <div class="createPost-container">
     <el-form ref="form" :model="form" label-width="120px" >
       <el-row class="createPost-main-container">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="Participant">
             <el-select v-model="isParticipantSelected" placeholder="please select Participant">
               <el-option label="IQVIA" value="0"/>
@@ -11,6 +11,7 @@
               <el-option label="Patient" value="3"/>
               <el-option label="Pharma" value="4"/>
               <el-option label="Insurance" value="5"/>
+              <el-option label="Distributor" value="6"/>
             </el-select>
           </el-form-item>
           <div v-if="isParticipantSelected" >
@@ -21,7 +22,7 @@
             <el-form-item label="Last Name">
               <el-input v-model="form.lastName"/>
             </el-form-item>
-            <el-row v-if="isParticipantSelected !=5">
+            <el-row v-if="isParticipantSelected ==1|| isParticipantSelected==3 ">
               <el-col :span="8" >
                 <el-form-item label="Marital Status">
                   <el-select v-model="form.maritalStatus" placeholder="Select">

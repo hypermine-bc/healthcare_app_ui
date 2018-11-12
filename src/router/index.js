@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
+// import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 // import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
@@ -96,21 +96,21 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/svg-icons/index'),
-        name: 'Icons',
-        meta: { title: 'icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/svg-icons/index'),
+  //       name: 'Icons',
+  //       meta: { title: 'icons', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
 
   /** When your routing table is too long, you can split it into small modules**/
-  componentsRouter,
+  // componentsRouter,
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
@@ -156,13 +156,6 @@ export const asyncRouterMap = [
         meta: { title: 'Create User', icon: 'edit' }
       },
       {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/admin/edit'),
-        name: 'EditUser',
-        meta: { title: 'Edit User', noCache: true },
-        hidden: true
-      },
-      {
         path: 'list',
         component: () => import('@/views/admin/userlist'),
         name: 'UserList',
@@ -180,17 +173,12 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/patient/notification',
     name: 'Patient',
+    alwaysShow: true,
     meta: {
       title: 'Patient',
       icon: 'people'
     },
     children: [
-      {
-        path: 'create',
-        component: () => import('@/views/patient/create'),
-        name: 'CreateUser',
-        meta: { title: 'Create User', icon: 'edit' }
-      },
       {
         path: 'notification',
         component: () => import('@/views/patient/notificationList'),
@@ -204,17 +192,12 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/charity/notification',
     name: 'Charity',
+    alwaysShow: true,
     meta: {
       title: 'Charity',
       icon: 'charity-bold'
     },
     children: [
-      {
-        path: 'create',
-        component: () => import('@/views/charity/create'),
-        name: 'CreateUser',
-        meta: { title: 'Create User', icon: 'edit' }
-      },
       {
         path: 'notification',
         component: () => import('@/views/charity/notificationList'),
@@ -228,22 +211,36 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/insurance/notification',
     name: 'Insurance',
+    alwaysShow: true,
     meta: {
       title: 'Insurance',
       icon: 'health'
     },
     children: [
       {
-        path: 'create',
-        component: () => import('@/views/insurance/create'),
-        name: 'CreateUser',
-        meta: { title: 'Create User', icon: 'edit' }
-      },
-      {
         path: 'notification',
         component: () => import('@/views/insurance/notificationList'),
         name: 'Notifications',
         meta: { title: 'Notifications', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/distributor',
+    component: Layout,
+    redirect: '/distributor/notification',
+    name: 'Distributor',
+    alwaysShow: true,
+    meta: {
+      title: 'Distributor',
+      icon: 'guide'
+    },
+    children: [
+      {
+        path: 'wallet',
+        component: () => import('@/views/distributor/wallet'),
+        name: 'Wallet',
+        meta: { title: 'Wallet', icon: 'wallet' }
       }
     ]
   },
@@ -274,6 +271,11 @@ export const asyncRouterMap = [
         component: () => import('@/views/pharma/notificationList'),
         name: 'Notifications',
         meta: { title: 'Notifications', icon: 'list' }
+      }, {
+        path: 'wallet',
+        component: () => import('@/views/pharma/wallet'),
+        name: 'Wallet',
+        meta: { title: 'Wallet', icon: 'wallet' }
       }
     ]
   },

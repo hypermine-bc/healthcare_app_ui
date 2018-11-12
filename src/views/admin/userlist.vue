@@ -9,6 +9,7 @@
           <pharmaList v-if="item.key=='PH'"/>
           <charityList v-if="item.key=='CH'"/>
           <insuranceList v-if="item.key=='IS'"/>
+          <distributorList v-if="item.key=='DL'" />
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
@@ -25,12 +26,13 @@ import pharmaList from './components/tab-panes/userpharmalist'
 import iqviaList from './components/tab-panes/useriqvialist'
 import charityList from './components/tab-panes/usercharitylist'
 import insuranceList from './components/tab-panes/insuranceList'
+import distributorList from './components/tab-panes/distributorlist'
 
 // ddd
 
 export default {
   name: 'ArticleList',
-  components: { patientList, doctorList, pharmaList, iqviaList, charityList, insuranceList },
+  components: { patientList, doctorList, pharmaList, iqviaList, charityList, insuranceList, distributorList },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -49,7 +51,8 @@ export default {
         { label: 'Patient', key: 'PT' },
         { label: 'Charity', key: 'CH' },
         { label: 'Pharma', key: 'PH' },
-        { label: 'Insurance', key: 'IS' }
+        { label: 'Insurance', key: 'IS' },
+        { label: 'Distributor', key: 'DL' }
       ],
       activeName: 'IQ',
       list: null,
